@@ -1,6 +1,6 @@
 language: node_js
 node_js: "v8.9.1"
-install:
-  - npm install
 script:
+  - cd my-app
+  - npm install
   - npm test
