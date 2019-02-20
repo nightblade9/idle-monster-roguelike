@@ -1,5 +1,5 @@
-#  Idle Monster Roguelike
+#  Space Marine Junaid
 
-[![Build Status](https://travis-ci.org/nightblade9/idle-monster-roguelike.svg?branch=master)](https://travis-ci.org/nightblade9/idle-monster-roguelike)
+[![Build Status](https://travis-ci.org/nightblade9/space-marine-junaid.svg?branch=master)](https://travis-ci.org/nightblade9/space-marine-junaid)
 
-Idle, single-player monster-themed roguelike. Created to learn ReactJS.
+Metroid-inspired roguelike made in ReactJS. 
