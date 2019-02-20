@@ -1,0 +1,57 @@
+<html><head>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet"> 
+
+    <style type="text/css">
+        .tile {
+            background: #222;
+            position: absolute;
+            color: white;
+            font-family: 'Roboto Mono', monospace;
+        }
+    </style>
+
+    <script type="text/javascript">
+        
+        function ready() {
+            var container = document.getElementById("container");
+            var tiles = [];
+
+            const TILES_WIDE = 40;
+            const TILES_HIGH = 22;
+            const TILE_WIDTH = 16;
+            const TILE_HEIGHT = 16;
+            
+            
+            for (var y = 0; y < TILES_HIGH; y++) {
+                for (var x = 0; x < TILES_WIDE; x++) {
+                    var tile = document.createElement("div");
+                    tile.className = "tile";
+
+                    // apply style
+                    tile.style.left = x * TILE_WIDTH;
+                    tile.style.top = y * TILE_HEIGHT;
+                    // DRY by doing it programatically
+                    tile.style.width = TILE_WIDTH;
+                    tile.style.heig = TILE_HEIGHT;
+
+                    container.appendChild(tile);
+                    tiles.push(tile);
+                    var char = '.';
+
+                    if (x == 0 || y == 0 || x == TILES_WIDE - 1 || y == TILES_HIGH - 1) {
+                        char = '#';
+                    }
+                    tile.innerText = char;
+                }
+            }
+
+            window.tiles = tiles; // global variable
+        }
+    </script>
+</head>
+<body onload="ready()">
+    <div id="container">
+
+    </div>
+</body>
+</html>
