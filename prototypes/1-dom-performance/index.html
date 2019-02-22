@@ -6,12 +6,12 @@
             margin: 0;
             padding: 0;
         }
-        
+
         .tile {
             background: #222;
             color: white;
             font-family: 'Roboto Mono', monospace;
-            font-size: 12px;
+            font-size: 18px;
             display: inline;
         }
     </style>
@@ -79,8 +79,12 @@
             var now = Date.now();
             var elapsedMilliseconds = now - window.lastFpsUpdate;
             if (elapsedMilliseconds >= 1000) {
-                var fps = window.numDraws / (elapsedMilliseconds / 1000);
-                console.log(fps + " FPS");
+                var fps = Math.round(window.numDraws / (elapsedMilliseconds / 1000));
+                
+                var fpsDisplay = document.getElementById("fpsDisplay");
+                if (fpsDisplay != null) {
+                    fpsDisplay.innerText = fps + " FPS";
+                }
 
                 window.numDraws = 0;
                 window.lastFpsUpdate = now;
@@ -90,8 +94,8 @@
 </head>
 
 <body onload="ready()">
-    <div id="container">
-    </div>
+    <div id="container" />
+    <div id="fpsDisplay" />
 </body>
 
 </html>
