@@ -2,12 +2,17 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet"> 
 
     <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
         .tile {
             background: #222;
-            position: absolute;
             color: white;
             font-family: 'Roboto Mono', monospace;
-            font-size: 14px;
+            font-size: 12px;
+            display: inline;
         }
     </style>
 
@@ -19,8 +24,8 @@
             var container = document.getElementById("container");
             window.tiles = [];
 
-            const TILES_WIDE = 40;
-            const TILES_HIGH = 22;
+            const TILES_WIDE = 50;
+            const TILES_HIGH = 15;
             const TILE_WIDTH = 16;
             const TILE_HEIGHT = 18;
             const TARGET_FPS = 60; // har, har. 60FPS? Orly?
@@ -29,18 +34,18 @@
             window.numDraws = 0;
             
             for (var y = 0; y < TILES_HIGH; y++) {
+                var row = document.createElement("div");
+
                 for (var x = 0; x < TILES_WIDE; x++) {
                     var tile = document.createElement("div");
                     tile.className = "tile";
 
                     // apply style
-                    tile.style.left = x * TILE_WIDTH;
-                    tile.style.top = y * TILE_HEIGHT;
                     // DRY by doing it programatically
                     tile.style.width = TILE_WIDTH;
                     tile.style.height = TILE_HEIGHT;
 
-                    container.appendChild(tile);
+                    row.appendChild(tile);
                     window.tiles.push(tile);
                     var char = '.';
 
@@ -49,8 +54,8 @@
                     }
                     tile.innerText = char;
                 }
+                container.appendChild(row);
             }
-
             setInterval(renderGarbage, 1000 / TARGET_FPS);
         }
 
