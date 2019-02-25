@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Tile from './Tile' 
 
 const TILES_WIDE = 50
@@ -10,11 +10,16 @@ class GameGrid extends React.Component {
         let rows = []
 
         // Outer loop to create parent
-        for (let j = 0; j < TILES_HIGH; j++) {
+        for (let y = 0; y < TILES_HIGH; y++) {
             let tiles = []
             //Inner loop to create children
-            for (let i = 0; i < TILES_WIDE; i++) {
-                tiles.push(<Tile />);
+            for (let x = 0; x < TILES_WIDE; x++) {
+                if (x === 0 || y === 0 || x === TILES_WIDE - 1 || y === TILES_HIGH - 1)
+                {
+                    tiles.push(<Tile isWall="true" />)
+                } else {
+                    tiles.push(<Tile />);
+                }
             }
             //Create the parent and add the children
             rows.push(<div className="row">{tiles}</div>)
