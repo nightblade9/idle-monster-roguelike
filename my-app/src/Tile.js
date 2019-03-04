@@ -4,7 +4,13 @@ class Tile extends React.Component {
     
     constructor(props) {
         super(props);
-        this.state = { isWall: ("isWall" in props ? props.isWall : false) };
+        this.state = {};
+        
+        if ("isWall" in props) {
+            this.state["isWall"] = props.isWall;
+        } else {
+            this.state["isWall"] = false;
+        }
     }
 
     render() {
@@ -12,7 +18,7 @@ class Tile extends React.Component {
     }
 
     getCharacter() {
-        if (this.state.isWall) {
+        if (this.state.isWall === true) {
             return '#';
         } else {
             return '.';

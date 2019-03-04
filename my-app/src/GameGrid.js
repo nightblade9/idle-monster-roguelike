@@ -16,13 +16,13 @@ class GameGrid extends React.Component {
             for (let x = 0; x < TILES_WIDE; x++) {
                 if (x === 0 || y === 0 || x === TILES_WIDE - 1 || y === TILES_HIGH - 1)
                 {
-                    tiles.push(<Tile isWall="true" />)
+                    tiles.push(<Tile isWall key={"tile" + x + "-" + y} />)
                 } else {
-                    tiles.push(<Tile />);
+                    tiles.push(<Tile key={"tile" + x + "-" + y} />);
                 }
             }
             //Create the parent and add the children
-            rows.push(<div className="row">{tiles}</div>)
+            rows.push(<div className="row" key={"row" + rows.length}>{tiles}</div>)
         }
         return rows
     }

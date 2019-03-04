@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-import GameGrid from './GameGrid';
 
 it('renders without crashing and has a container div with a gamegrid', () => {
   const div = document.createElement('div');
