@@ -1,3 +1,3 @@
-npm run build
 @echo off
-echo Release files are ready in `build`!
+npm run build
+echo static site ready to deploy from "build" directory!
