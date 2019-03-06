@@ -2,7 +2,7 @@ import React from 'react';
 import Tile from './Tile' 
 
 const TILES_WIDE = 50
-const TILES_HIGH = 15
+const TILES_HIGH = 16
 
 class GameGrid extends React.Component {
     
@@ -16,7 +16,7 @@ class GameGrid extends React.Component {
             for (let x = 0; x < TILES_WIDE; x++) {
                 if (x === 0 || y === 0 || x === TILES_WIDE - 1 || y === TILES_HIGH - 1)
                 {
-                    tiles.push(<Tile isWall key={"tile" + x + "-" + y} />)
+                    tiles.push(<Tile contents="Wall" key={"tile" + x + "-" + y} />)
                 } else {
                     tiles.push(<Tile key={"tile" + x + "-" + y} />);
                 }
@@ -30,7 +30,7 @@ class GameGrid extends React.Component {
 
     render() {
         return(
-            <div id="grid" style={{background: "#222", color: "white", fontFamily: 'Roboto Mono', fontSize: "18px", width: 450}}>
+            <div id="grid" style={{background: "#222", color: "white", fontFamily: 'Roboto Mono, monospace', fontSize: "18px", width: 450}}>
                 {this.createTiles()}
             </div>
         )

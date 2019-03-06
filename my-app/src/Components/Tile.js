@@ -4,12 +4,10 @@ class Tile extends React.Component {
     
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = { contents: null };
         
-        if ("isWall" in props) {
-            this.state["isWall"] = props.isWall;
-        } else {
-            this.state["isWall"] = false;
+        if ("contents" in props) {
+            this.state["contents"] = props.contents;
         }
     }
 
@@ -18,11 +16,13 @@ class Tile extends React.Component {
     }
 
     getCharacter() {
-        if (this.state.isWall === true) {
-            return '#';
-        } else {
-            return '.';
+        // TODO: this code smells. Reeks, even.
+        if (this.state.contents == null) {
+            return ".";
+        } else if (this.state.contents.toLowerCase() === "wall") {
+            return "#";
         }
+        throw new Error("Not sure how to render tile contents: " + this.contents);
     }
 }
 
