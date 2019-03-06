@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import GameGrid from './GameGrid';
+import GameGrid from './Components/GameGrid';
 // import logo from './logo.svg';
 import './App.css';
 
