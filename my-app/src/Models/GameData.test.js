@@ -13,11 +13,12 @@ it('creates a map with some wall tiles and some floor tiles, in the constructor'
   var numWalls = 0;
 
   for (var i = 0; i < gameData.currentMap.length; i++) {
-    var state = gameData.currentMap[i];
-    
-    if (state === "wall") {
+    var tile = gameData.currentMap[i];
+    var type = tile.type;
+
+    if (type === "wall") {
       numWalls++;
-    } else if (state === "empty") {
+    } else if (type === "floor") {
       numFloors++;
     }
   }

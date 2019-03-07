@@ -8,14 +8,13 @@ class Tile extends React.Component {
         this.state = {"contents": "empty"};
 
         if ("contents" in props) {
-            var contents = this.props["contents"].toLowerCase();
-            if (contents in Tile.VALID_CONTENTS_DISPLAY) {
-                var value = Tile.VALID_CONTENTS_DISPLAY;
-                if (value !== null) {
-                    this.state["contents"] = contents;
-                }
+            // "Contents" is an instance of TileModel
+            var tileModel = this.props["contents"];
+            var type = tileModel.type.toLowerCase();
+            if (type in Tile.VALID_STATES_DISPLAY) {
+                this.state["data"] = tileModel;
             } else {
-                throw new Error("Invalid tile contents: " + contents);
+                throw new Error("Invalid tile type: " + type);
             }
         }
     }
@@ -25,13 +24,13 @@ class Tile extends React.Component {
     }
 
     getCharacter() {
-        return Tile.VALID_CONTENTS_DISPLAY[this.state.contents];
+        return Tile.VALID_STATES_DISPLAY[this.state["data"].type];
     }
 }
 
 // Valid contents, and what they display as
-Tile.VALID_CONTENTS_DISPLAY = {
-    "empty": '.',
+Tile.VALID_STATES_DISPLAY = {
+    "floor": '.',
     "wall": '#'
 }
 

@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Tile from './Tile';
+import TileModel from '../Models/TileModel';
 
-it('renders as a floor tile without crashing', () => {
+it('renders as a floor tile if contents are specified as floor', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<Tile />, div);
+  ReactDOM.render(<Tile contents={new TileModel("floor")} />, div);
   expect(div.children.length).toBe(1);
 
   var contentDiv = div.children[0];
@@ -15,7 +16,7 @@ it('renders as a floor tile without crashing', () => {
 
 it('renders as a wall tile if contents is specified as wall', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<Tile contents="Wall" />, div);
+  ReactDOM.render(<Tile contents={new TileModel("wall")} />, div);
   expect(div.children.length).toBe(1);
 
   var contentDiv = div.children[0];
