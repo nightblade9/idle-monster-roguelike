@@ -4,10 +4,19 @@ class Tile extends React.Component {
     
     constructor(props) {
         super(props);
-        this.state = { contents: null };
         
+        this.state = {"contents": "empty"};
+
         if ("contents" in props) {
-            this.state["contents"] = props.contents;
+            var contents = this.props["contents"].toLowerCase();
+            if (contents in Tile.VALID_CONTENTS_DISPLAY) {
+                var value = Tile.VALID_CONTENTS_DISPLAY;
+                if (value !== null) {
+                    this.state["contents"] = contents;
+                }
+            } else {
+                throw new Error("Invalid tile contents: " + contents);
+            }
         }
     }
 
@@ -16,14 +25,15 @@ class Tile extends React.Component {
     }
 
     getCharacter() {
-        // TODO: this code smells. Reeks, even.
-        if (this.state.contents == null) {
-            return ".";
-        } else if (this.state.contents.toLowerCase() === "wall") {
-            return "#";
-        }
-        throw new Error("Not sure how to render tile contents: " + this.contents);
+        return Tile.VALID_CONTENTS_DISPLAY[this.state.contents];
     }
 }
+
+// Valid contents, and what they display as
+Tile.VALID_CONTENTS_DISPLAY = {
+    "empty": '.',
+    "wall": '#'
+}
+
 
 export default Tile;

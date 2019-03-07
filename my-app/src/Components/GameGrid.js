@@ -14,9 +14,9 @@ class GameGrid extends React.Component {
             for (let x = 0; x < TILES_WIDE; x++) {
                 var index = (y * TILES_WIDE) + x;
                 if (x === 0 || y === 0 || x === TILES_WIDE - 1 || y === TILES_HIGH - 1) {
-                    this.state.tileContents[index] = "Wall";
+                    this.state.tileContents[index] = "wall";
                 } else {
-                    this.state.tileContents[index] = null;
+                    this.state.tileContents[index] = "empty";
                 }
             }
         }
