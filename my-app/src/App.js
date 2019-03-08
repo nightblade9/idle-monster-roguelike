@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import GameGrid from './Components/GameGrid';
 import GameData from './Models/GameData';
 
 import './App.css';
+import PlayerController from './Components/PlayerController';
 
 class App extends Component {
 
@@ -15,7 +15,7 @@ class App extends Component {
     return (
 
       <div id="container">
-        <GameGrid gameData={this.gameData} />
+        <PlayerController gameData={this.gameData} />
       </div>
     );
   }
