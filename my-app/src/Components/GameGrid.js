@@ -5,12 +5,12 @@ class GameGrid extends React.Component {
     
     constructor(props) {
         super(props);
-        this.gameData = props.gameData;
+        this.state = {"gameData": props.gameData};
     }
 
     createTiles = () => {
         let rows = []
-        var data = this.gameData;
+        var data = this.state["gameData"];
 
         // Outer loop to create parent
         for (let y = 0; y < data.mapHeight; y++) {
@@ -27,10 +27,45 @@ class GameGrid extends React.Component {
 
     render() {
         return(
-            <div id="grid" style={{background: "#222", color: "white", fontFamily: 'Roboto Mono, monospace', fontSize: "18px", width: 450}}>
-                {this.createTiles()}
+             // https://stackoverflow.com/questions/3149362/capture-key-press-or-keydown-event-on-div-element
+            <div id="playerController" onKeyPress={this.handleKeyPress} tabIndex="0">
+                <div id="grid" style={{background: "#222", color: "white", fontFamily: 'Roboto Mono, monospace', fontSize: "18px", width: 450}}>
+                    {this.createTiles()}
+                </div>
             </div>
         )
+    }
+
+    handleKeyPress = (event) => {
+        var keyPressed = event.key;
+        var player = this.state["gameData"].player;
+        var moved = false;
+
+        switch (keyPressed) {
+            case "w":
+                player.y -= 1;
+                moved = true;
+                break;
+            case "a":
+                player.x -= 1;
+                moved = true;
+                break;
+            case "s":
+                player.y += 1;
+                moved = true;
+                break;
+            case "d": 
+                player.x += 1;
+                moved = true;
+                break;
+            default:
+                // do nothing.
+        }
+
+        if (moved) {
+            console.log("Player is now at " + player.x + ", " + player.y);
+            this.setState({"gameData": this.state["gameData"]});
+        }
     }
 }
 
