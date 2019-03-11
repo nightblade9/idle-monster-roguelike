@@ -8,11 +8,28 @@ class PlayerController extends React.Component {
     constructor(props) {
         super(props);
         this.gameData = props.gameData;
-        console.log("PC: gd=" + this.gameData);
     }
 
     handleKeyPress = (event) => {
-        console.log("Key pressed: " + event.key);
+        var keyPressed = event.key;
+        switch (keyPressed) {
+            case "w":
+                this.gameData.player.y -= 1;
+                break;
+            case "a":
+                this.gameData.player.x -= 1;
+                break;
+            case "s":
+                this.gameData.player.y += 1;
+                break;
+            case "d": 
+                this.gameData.player.x += 1;
+                break;
+            default:
+                // do nothing.
+        }
+        console.log("Player is now at " + this.gameData.player.x + ", " + this.gameData.player.y);
+        this.setState(this.state);
     }
 
     render() {
