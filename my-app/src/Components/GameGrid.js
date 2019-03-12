@@ -6,11 +6,9 @@ class GameGrid extends React.Component {
     constructor(props) {
         super(props);
         this.state = {"gameData": props.gameData};
-        this.rows = this.createTiles();
     }
 
     createTiles = () => {
-        console.log("CreateTiles");
         let rows = []
         var data = this.state["gameData"];
 
@@ -19,7 +17,7 @@ class GameGrid extends React.Component {
             let tiles = []
             //Inner loop to create children
             for (let x = 0; x < data.mapWidth; x++) {
-                tiles.push(<Tile contents={data.currentMap[y * data.mapWidth + x]} key={"tile" + x + "-" + y} />)
+                tiles.push(<Tile x={x} y={y} contents={data.currentMap[y * data.mapWidth + x]} key={"tile" + x + "-" + y} />)
             }
             //Create the parent and add the children
             rows.push(<div className="row" key={"row" + rows.length}>{tiles}</div>)
@@ -32,7 +30,7 @@ class GameGrid extends React.Component {
              // https://stackoverflow.com/questions/3149362/capture-key-press-or-keydown-event-on-div-element
             <div id="playerController" onKeyPress={this.handleKeyPress} tabIndex="0">
                 <div id="grid" style={{background: "#222", color: "white", fontFamily: 'Roboto Mono, monospace', fontSize: "18px", width: 450}}>
-                    {this.rows}
+                    {this.createTiles()}
                 </div>
             </div>
         )
@@ -41,32 +39,28 @@ class GameGrid extends React.Component {
     handleKeyPress = (event) => {
         var keyPressed = event.key;
         var player = this.state["gameData"].player;
-        var moved = false;
+        var newCoordinates = null; // [x, y]
 
         switch (keyPressed) {
             case "w":
-                player.y -= 1;
-                moved = true;
+                newCoordinates = [player.x, player.y - 1];
                 break;
             case "a":
-                player.x -= 1;
-                moved = true;
+                newCoordinates = [player.x - 1, player.y];
                 break;
             case "s":
-                player.y += 1;
-                moved = true;
+                newCoordinates = [player.x, player.y + 1];
                 break;
             case "d": 
-                player.x += 1;
-                moved = true;
+                newCoordinates = [player.x + 1, player.y];
                 break;
             default:
                 // do nothing.
         }
 
-        if (moved) {
-            console.log("Player is now at " + player.x + ", " + player.y);
-            this.setState({"gameData": this.state["gameData"]});
+        if (newCoordinates != null) {
+            this.state["gameData"].movePlayer(newCoordinates);
+            this.setState({"gameData": this.state["gameData"]}); // Refresh
         }
     }
 }

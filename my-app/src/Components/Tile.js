@@ -4,8 +4,9 @@ class Tile extends React.Component {
     
     constructor(props) {
         super(props);
-        
-        this.state = {"contents": "empty"};
+
+        // x, y coordinates just make it easier to debug
+        this.state = {"x": props.x, "y": props.y, "contents": "empty"};
 
         if ("contents" in props) {
             // "Contents" is an instance of TileModel
@@ -15,7 +16,7 @@ class Tile extends React.Component {
                 this.state["data"] = tileModel;
             } else {
                 throw new Error("Invalid tile type: " + type);
-            }
+            }            
         }
     }
 
