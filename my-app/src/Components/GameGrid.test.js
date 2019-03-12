@@ -8,7 +8,11 @@ it('renders without crashing and has a grid div with some tiles', () => {
   ReactDOM.render(<GameGrid gameData={new GameData()} />, div);
   expect(div.children.length).toBe(1);
 
-  var gridDiv = div.children[0];
+  var controllerDiv = div.children[0];
+  expect(controllerDiv.id).toBe("playerController")
+  expect(controllerDiv.children.length).toBe(1);
+
+  var gridDiv = controllerDiv.children[0];
   expect(gridDiv.id).toBe("grid")
   expect(gridDiv.children.length).toBeGreaterThan(1);
 

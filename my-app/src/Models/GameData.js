@@ -35,19 +35,15 @@ class GameData {
     }
 
     // Controller method
-    movePlayer = (coordinates) => {
-        
-        var x = coordinates[0];
-        var y = coordinates[1];
-        
+    movePlayer = (x, y) => {
         var index = this.coordinatesToIndex(this.player.x, this.player.y);
-        var currentTile = this.currentMap[index];
-        currentTile.clearContents();
+        var previousTile = this.currentMap[index];
+        previousTile.clearContents();
         
         this.player.x = x;
         this.player.y = y;
         index = this.coordinatesToIndex(x, y);
-        currentTile = this.currentMap[index];
+        var currentTile = this.currentMap[index];
         currentTile.setContents(this.player);
     }
 }

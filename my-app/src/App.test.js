@@ -8,11 +8,8 @@ it('renders without crashing and has a container div with a player controller', 
   expect(div.children.length).toBe(1);
 
   var containerDiv = div.children[0];
-  expect(containerDiv.id).toBe("container")
+  expect(containerDiv.id).toBe("playerController")
   expect(containerDiv.children.length).toBe(1)
-
-  var gameGrid = containerDiv.children[0];
-  expect(gameGrid.id).toBe("playerController");
 
   ReactDOM.unmountComponentAtNode(div);
 });

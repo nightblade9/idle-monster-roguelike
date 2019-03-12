@@ -38,12 +38,9 @@ it('creates a map with some wall tiles and some floor tiles, in the constructor'
   expect(numWalls).toBeGreaterThan(0);
 });
 
-it('clears old tile contents and moves player to the new tile contents in movePlayer', () => {
+it('movePlayer clears old tile contents and moves player to the new tile contents', () => {
   // Arrange
   var gameData = new GameData();
-  var mapWidth = gameData.mapWidth;
-  var mapHeight = gameData.mapHeight;
-  
   var player = gameData.player;
 
   // Redundant but makes it clear later
@@ -52,7 +49,7 @@ it('clears old tile contents and moves player to the new tile contents in movePl
   expect(playerTile.contents).toBe(player);
 
   // Act
-  gameData.movePlayer(7, 3); // teleporting is okay for tests
+  gameData.movePlayer(10, 9); // teleporting is okay for tests
 
   // Assert
   var newPlayerIndex = gameData.coordinatesToIndex(player.x, player.y);

@@ -59,7 +59,7 @@ class GameGrid extends React.Component {
         }
 
         if (newCoordinates != null) {
-            this.state["gameData"].movePlayer(newCoordinates);
+            this.state["gameData"].movePlayer(newCoordinates[0], newCoordinates[1]);
             this.setState({"gameData": this.state["gameData"]}); // Refresh
         }
     }
