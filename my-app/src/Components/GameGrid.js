@@ -6,9 +6,11 @@ class GameGrid extends React.Component {
     constructor(props) {
         super(props);
         this.state = {"gameData": props.gameData};
+        this.rows = this.createTiles();
     }
 
     createTiles = () => {
+        console.log("CreateTiles");
         let rows = []
         var data = this.state["gameData"];
 
@@ -30,7 +32,7 @@ class GameGrid extends React.Component {
              // https://stackoverflow.com/questions/3149362/capture-key-press-or-keydown-event-on-div-element
             <div id="playerController" onKeyPress={this.handleKeyPress} tabIndex="0">
                 <div id="grid" style={{background: "#222", color: "white", fontFamily: 'Roboto Mono, monospace', fontSize: "18px", width: 450}}>
-                    {this.createTiles()}
+                    {this.rows}
                 </div>
             </div>
         )
