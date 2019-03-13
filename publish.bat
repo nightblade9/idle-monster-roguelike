@@ -3,23 +3,17 @@
 set TEMP_DIR=..\GHPAGES
 set SOURCE_DIR=space-marine-junaid
 
-REM delete and recreate the temp dir
-rd /s /q %TEMP_DIR%
-cd my-app
-rd /s /q build
-
-REM seed it with .git
-mkdir ..\%TEMP_DIR%
-mkdir ..\%TEMP_DIR%\.git
-xcopy /Y /s ..\.git ..\%TEMP_DIR%\.git
-
-cd ..\%TEMP_DIR%
-git checkout -f gh-pages
+REM clean out all files and make sure we're on origin/gh-pages
+cd %TEMP_DIR%
 git pull
+git rm -rf .
 
+REM delete and recreate the temp dir
 cd ..\%SOURCE_DIR%\my-app
+rd /s /q build
 cmd /c npm run build
 
+xcopy /Y /s build\* ..\%TEMP_DIR%
 cd ..\%TEMP_DIR%
 
 @echo on
