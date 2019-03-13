@@ -21,9 +21,12 @@ cd ..\%SOURCE_DIR%\my-app
 cmd /c npm run build
 
 cd ..\%TEMP_DIR%
-echo git add -A .
-echo git commit . -m "Publish latest version"
-echo git push
+
+@echo on
+
+git add -A .
+git commit . -m "Publish latest version"
+git push
 
 cd ..\%SOURCE_DIR%
 echo Pushed to gh-pages.
