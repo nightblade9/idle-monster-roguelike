@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/space-marine-junaid/precache-manifest.8a644d24573de54863f5da0331ed9260.js"
+  "/space-marine-junaid/precache-manifest.50d99b867e6aeaaea7cb901d62116266.js"
 );
 
 workbox.clientsClaim();
