@@ -1,3 +1,10 @@
+REM #################################################################################################
+REM Creates a temporary directory called GHPAGES one directory up, and copies all output files there.
+
+REM Does a quick delete of existing files by using git rm -rf .
+REM Also, assumes you have git credentials securely set up for your user.
+REM #################################################################################################
+
 @echo off
 
 set TEMP_DIR=..\GHPAGES
