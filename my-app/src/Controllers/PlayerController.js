@@ -25,7 +25,7 @@ class PlayerController {
                 newX -= 1;
                 break;
             default:
-                // do nothing.
+                throw Error("Invalid direction: " + direction);
         }
 
         if (newX !== player.x || newY !== player.y) {
