@@ -39,28 +39,31 @@ class GameGrid extends React.Component {
     handleKeyPress = (event) => {
         var keyPressed = event.key;
         var player = this.state["gameData"].player;
-        var newCoordinates = null; // [x, y]
+        var newX = player.x;
+        var newY = player.y;
 
         switch (keyPressed) {
             case "w":
-                newCoordinates = [player.x, player.y - 1];
+                newY -= 1;
                 break;
             case "a":
-                newCoordinates = [player.x - 1, player.y];
+                newX -= 1;
                 break;
             case "s":
-                newCoordinates = [player.x, player.y + 1];
+                newY += 1;
                 break;
             case "d": 
-                newCoordinates = [player.x + 1, player.y];
+                newX += 1;
                 break;
             default:
                 // do nothing.
         }
 
-        if (newCoordinates != null) {
-            this.state["gameData"].movePlayer(newCoordinates[0], newCoordinates[1]);
-            this.setState({"gameData": this.state["gameData"]}); // Refresh
+        if (newX !== player.x || newY !== player.y) {
+            var isPlayerMoved = this.state["gameData"].tryMovePlayer(newX, newY);
+            if (isPlayerMoved) {
+                this.setState({"gameData": this.state["gameData"]}); // Refresh
+            }
         }
     }
 }

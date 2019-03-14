@@ -15,7 +15,7 @@ it('creates a map in the constructor and sets the player coordinates and tile', 
 
   var playerIndex = gameData.coordinatesToIndex(player.x, player.y);
   var playerTile = gameData.currentMap[playerIndex];
-  expect(playerTile.contents).toBe(player);
+  expect(playerTile.occupant).toBe(player);
 });
 
 it('creates a map with some wall tiles and some floor tiles, in the constructor', () => {
@@ -38,7 +38,7 @@ it('creates a map with some wall tiles and some floor tiles, in the constructor'
   expect(numWalls).toBeGreaterThan(0);
 });
 
-it('movePlayer clears old tile contents and moves player to the new tile contents', () => {
+it('tryMovePlayer clears old tile occupant and moves player to the new tile occupant if walkable', () => {
   // Arrange
   var gameData = new GameData();
   var player = gameData.player;
@@ -46,16 +46,69 @@ it('movePlayer clears old tile contents and moves player to the new tile content
   // Redundant but makes it clear later
   var playerIndex = gameData.coordinatesToIndex(player.x, player.y);
   var playerTile = gameData.currentMap[playerIndex];
-  expect(playerTile.contents).toBe(player);
+  expect(playerTile.occupant).toBe(player);
 
   // Act
-  gameData.movePlayer(10, 9); // teleporting is okay for tests
+  gameData.tryMovePlayer(10, 9); // teleporting is okay for tests
 
   // Assert
   var newPlayerIndex = gameData.coordinatesToIndex(player.x, player.y);
   expect(newPlayerIndex).not.toBe(playerIndex);
   
   var newPlayerTile = gameData.currentMap[newPlayerIndex];
-  expect(newPlayerTile.contents).toBe(player);
-  expect(playerTile.contents).toBe(null);
+  expect(newPlayerTile.occupant).toBe(player);
+  expect(playerTile.occupant).toBe(null);
+});
+
+it('tryMovePlayer does not move player if target tile is a wall', () => {
+  // Arrange
+  var gameData = new GameData();
+  var player = gameData.player;
+  player.x = 7;
+  player.y = 6;
+
+  // Redundant but makes it clear later
+  var playerIndex = gameData.coordinatesToIndex(player.x, player.y);
+  var playerTile = gameData.currentMap[playerIndex];
+  playerTile.occupy(player);
+
+  // Act
+  var tileIndex = gameData.coordinatesToIndex(0, 1);
+  var tile = gameData.currentMap[tileIndex];
+  tile.type = "wall";
+  gameData.tryMovePlayer(0, 1); // Wall at (0, 1)
+
+  // Assert
+  expect(tile.occupant).toBe(null);
+  expect(player.x).toBe(7);
+  expect(player.y).toBe(6);
+  playerIndex = gameData.coordinatesToIndex(player.x, player.y);
+  playerTile = gameData.currentMap[playerIndex];
+  expect(playerTile.occupant).toBe(player);
+});
+
+it('tryMovePlayer does not move player if target tile is already occupied', () => {
+  // Arrange
+  var gameData = new GameData();
+  var player = gameData.player;
+  player.x = 7;
+  player.y = 6;
+
+  // Redundant but makes it clear later
+  var playerIndex = gameData.coordinatesToIndex(player.x, player.y);
+  var playerTile = gameData.currentMap[playerIndex];
+  playerTile.occupy(player);
+
+  // Act
+  var tileIndex = gameData.coordinatesToIndex(0, 1);
+  var tile = gameData.currentMap[tileIndex];
+  tile.occupy("random monster");
+  gameData.tryMovePlayer(0, 1); // Creature at (0, 1)
+
+  // Assert
+  expect(player.x).toBe(7);
+  expect(player.y).toBe(6);
+  playerIndex = gameData.coordinatesToIndex(player.x, player.y);
+  playerTile = gameData.currentMap[playerIndex];
+  expect(playerTile.occupant).toBe(player);
 });

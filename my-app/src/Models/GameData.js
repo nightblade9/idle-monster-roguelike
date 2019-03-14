@@ -27,24 +27,30 @@ class GameData {
         }
 
         var playerTile = this.currentMap[(this.player.y * MAP_TILES_WIDE) + this.player.x];
-        playerTile.contents = this.player;
+        playerTile.occupy(this.player);
     }
 
     coordinatesToIndex = (x, y) => {
         return (y * MAP_TILES_WIDE) + x;
     }
 
-    // Controller method
-    movePlayer = (x, y) => {
-        var index = this.coordinatesToIndex(this.player.x, this.player.y);
-        var previousTile = this.currentMap[index];
-        previousTile.clearContents();
+    // Controller method. Moves player if the target tile is walkable. Returns true if the player moved.
+    tryMovePlayer = (x, y) => {
+        var previousIndex = this.coordinatesToIndex(this.player.x, this.player.y);
+        var previousTile = this.currentMap[previousIndex];
         
-        this.player.x = x;
-        this.player.y = y;
-        index = this.coordinatesToIndex(x, y);
-        var currentTile = this.currentMap[index];
-        currentTile.setContents(this.player);
+        var currentIndex = this.coordinatesToIndex(x, y);
+        var currentTile = this.currentMap[currentIndex];
+
+        if (currentTile.isWalkable()) {
+            this.player.x = x;
+            this.player.y = y;        
+            previousTile.empty();
+            currentTile.occupy(this.player);
+            return true;
+        } else {
+            return false;
+        }
     }
 }
 

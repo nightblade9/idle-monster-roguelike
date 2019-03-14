@@ -1,16 +1,20 @@
 // Should probably rename this to something other than "tile"
 class Tile {
     constructor(type) {
-        this.type = type; // empty, wall, etc.
-        this.contents = null; // just one item
+        this.type = type; // "floor", "wall", etc.
+        this.occupant = null; // just one person
     }
 
-    setContents = (newContents) => {
-        this.contents = newContents;
+    occupy = (occupant) => {
+        this.occupant = occupant;
     }
 
-    clearContents = () => {
-        this.setContents(null);
+    empty = () => {
+        this.occupant = null;
+    }
+
+    isWalkable = () => {
+        return this.type === "floor" && this.occupant == null;
     }
 }
 

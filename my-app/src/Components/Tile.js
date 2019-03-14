@@ -26,8 +26,8 @@ class Tile extends React.Component {
 
     getCharacter() {
         var stateData = this.state["data"];
-        if (stateData.contents != null) {
-            return stateData.contents.DISPLAY_CHARACTER;
+        if (stateData.occupant != null) {
+            return stateData.occupant.DISPLAY_CHARACTER;
         } else {
             return Tile.VALID_STATES_DISPLAY[stateData.type];
         }
