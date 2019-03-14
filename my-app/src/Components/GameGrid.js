@@ -1,11 +1,23 @@
 import React from 'react';
+
+import Directions from '../Enums/Direction';
+import PlayerController from '../Controllers/PlayerController';
 import Tile from './Tile';
 
+const KEY_TO_DIRECTION = {
+    "w": Directions.UP,
+    "a": Directions.LEFT,
+    "s": Directions.DOWN,
+    "d": Directions.RIGHT
+
+}
+
 class GameGrid extends React.Component {
-    
+
     constructor(props) {
         super(props);
         this.state = {"gameData": props.gameData};
+        this.playerController = new PlayerController(props.gameData);
     }
 
     createTiles = () => {
@@ -38,29 +50,9 @@ class GameGrid extends React.Component {
 
     handleKeyPress = (event) => {
         var keyPressed = event.key;
-        var player = this.state["gameData"].player;
-        var newX = player.x;
-        var newY = player.y;
-
-        switch (keyPressed) {
-            case "w":
-                newY -= 1;
-                break;
-            case "a":
-                newX -= 1;
-                break;
-            case "s":
-                newY += 1;
-                break;
-            case "d": 
-                newX += 1;
-                break;
-            default:
-                // do nothing.
-        }
-
-        if (newX !== player.x || newY !== player.y) {
-            var isPlayerMoved = this.state["gameData"].tryMovePlayer(newX, newY);
+        if (keyPressed in KEY_TO_DIRECTION) {
+            var directionPressed = KEY_TO_DIRECTION[keyPressed];        
+            var isPlayerMoved = this.playerController.tryMovePlayer(directionPressed);
             if (isPlayerMoved) {
                 this.setState({"gameData": this.state["gameData"]}); // Refresh
             }
