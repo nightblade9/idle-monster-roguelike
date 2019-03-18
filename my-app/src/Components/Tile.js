@@ -24,7 +24,9 @@ class Tile extends React.Component {
         // This is probably an anti-pattern.
         var distanceToPlayer = Math.sqrt(Math.pow(this.state["x"] - this.state["player"].x, 2) + Math.pow(this.state["y"] - this.state["player"].y, 2));
         var sightRadius = this.state["player"].sightRadius;
+        
         // setState here causes infinite recursion
+        // eslint-disable-next-line
         this.state["isVisible"] = (distanceToPlayer <= sightRadius);
 
         return (

@@ -43,8 +43,7 @@ class GameData {
         var currentTile = this.currentMap[currentIndex];
 
         if (currentTile.isWalkable()) {
-            this.player.x = x;
-            this.player.y = y;        
+            this.player = Object.assign(this.player, { x: x, y: y});
             previousTile.empty();
             currentTile.occupy(this.player);
             return true;
