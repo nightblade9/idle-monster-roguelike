@@ -6,7 +6,7 @@ class Tile extends React.Component {
         super(props);
 
         // x, y coordinates just make it easier to debug
-        this.state = {"x": props.x, "y": props.y, "contents": "empty"};
+        this.state = {"x": props.x, "y": props.y, "contents": "empty", "player": props.player};
 
         if ("contents" in props) {
             // "Contents" is an instance of TileModel
@@ -21,24 +21,46 @@ class Tile extends React.Component {
     }
 
     render() {
-        return <div style={{background: "#222", display: "inline", "color": this.getColour()}}>{this.getCharacter()}</div>;
+        // This is probably an anti-pattern.
+        var distanceToPlayer = Math.sqrt(Math.pow(this.state["x"] - this.state["player"].x, 2) + Math.pow(this.state["y"] - this.state["player"].y, 2));
+        var sightRadius = this.state["player"].sightRadius;
+        // setState here causes infinite recursion
+        this.state["isVisible"] = (distanceToPlayer <= sightRadius);
+
+        return (
+            <div style={{background: "black", display: "inline", "color": this.getColour()}}>{this.getCharacter()}</div>
+        );
     }
 
-    getCharacter() {
-        var stateData = this.state["data"];
-        if (stateData.occupant != null) {
-            return stateData.occupant.DISPLAY_CHARACTER;
+    getCharacter() {        
+        
+
+        if (!this.state["isVisible"]) {
+            // TODO: if discovered, render wall character
+
+            // Rendering a space here, doesn't render the element; &nbsp; doesn't render decoded either.
+            // So, we render an arbitrary character; colour will hide it anyway.
+            return '_'; 
         } else {
-            return Tile.VALID_STATES_DISPLAY[stateData.type];
+            var stateData = this.state["data"];
+            if (stateData.occupant != null) {
+                return stateData.occupant.DISPLAY_CHARACTER;
+            } else {
+                return Tile.VALID_STATES_DISPLAY[stateData.type];
+            }
         }
     }
 
     getColour() {
-        var stateData = this.state["data"];
-        if (stateData.occupant != null) {
-            return stateData.occupant.BASE_COLOUR;
+        if (this.state["isVisible"]) {
+            var stateData = this.state["data"];
+            if (stateData.occupant != null) {
+                return stateData.occupant.BASE_COLOUR;
+            } else {
+                return Tile.TYPE_COLOURS[stateData.type];
+            }
         } else {
-            return Tile.TYPE_COLOURS[stateData.type];
+            return "black";
         }
     }
 }
@@ -50,7 +72,7 @@ Tile.VALID_STATES_DISPLAY = {
 }
 
 Tile.TYPE_COLOURS = {
-    "floor": "#444",
+    "floor": "#888",
     "wall": "#bbb"
 }
 

@@ -29,7 +29,7 @@ class GameGrid extends React.Component {
             let tiles = []
             //Inner loop to create children
             for (let x = 0; x < data.mapWidth; x++) {
-                tiles.push(<Tile x={x} y={y} contents={data.currentMap[y * data.mapWidth + x]} key={"tile" + x + "-" + y} />)
+                tiles.push(<Tile x={x} y={y} contents={data.currentMap[y * data.mapWidth + x]} key={"tile" + x + "-" + y} player={data.player} />)
             }
             //Create the parent and add the children
             rows.push(<div className="row" key={"row" + rows.length}>{tiles}</div>)
