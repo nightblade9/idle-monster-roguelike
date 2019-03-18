@@ -41,7 +41,7 @@ class GameGrid extends React.Component {
         return(
              // https://stackoverflow.com/questions/3149362/capture-key-press-or-keydown-event-on-div-element
             <div id="playerController" onKeyPress={this.handleKeyPress} tabIndex="0">
-                <div id="grid" style={{background: "#222", color: "white", fontFamily: 'Roboto Mono, monospace', fontSize: "18px", width: 450}}>
+                <div id="grid" style={{color: "white", fontFamily: 'Roboto Mono, monospace', fontSize: "18px", width: 450}}>
                     {this.createTiles()}
                 </div>
             </div>

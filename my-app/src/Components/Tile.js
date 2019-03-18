@@ -21,7 +21,7 @@ class Tile extends React.Component {
     }
 
     render() {
-        return <div style={{background: "#222", display: "inline"}}>{this.getCharacter()}</div>;
+        return <div style={{background: "#222", display: "inline", "color": this.getColour()}}>{this.getCharacter()}</div>;
     }
 
     getCharacter() {
@@ -32,6 +32,15 @@ class Tile extends React.Component {
             return Tile.VALID_STATES_DISPLAY[stateData.type];
         }
     }
+
+    getColour() {
+        var stateData = this.state["data"];
+        if (stateData.occupant != null) {
+            return stateData.occupant.BASE_COLOUR;
+        } else {
+            return Tile.TYPE_COLOURS[stateData.type];
+        }
+    }
 }
 
 // Valid contents, and what they display as
@@ -40,5 +49,9 @@ Tile.VALID_STATES_DISPLAY = {
     "wall": '#'
 }
 
+Tile.TYPE_COLOURS = {
+    "floor": "#444",
+    "wall": "#bbb"
+}
 
 export default Tile;
