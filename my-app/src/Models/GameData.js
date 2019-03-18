@@ -30,6 +30,15 @@ class GameData {
         playerTile.occupy(this.player);
     }
 
+    getTile = (x, y) => {
+        var currentIndex = this.coordinatesToIndex(x, y);
+        if (currentIndex < this.currentMap.length) {
+            return this.currentMap[currentIndex];
+        } else {
+            return null;
+        }
+    }
+
     coordinatesToIndex = (x, y) => {
         return (y * MAP_TILES_WIDE) + x;
     }

@@ -35,16 +35,18 @@ class Tile extends React.Component {
     }
 
     getCharacter() {        
-        
+        var stateData = this.state["data"];       
 
         if (!this.state["isVisible"]) {
-            // TODO: if discovered, render wall character
-
-            // Rendering a space here, doesn't render the element; &nbsp; doesn't render decoded either.
-            // So, we render an arbitrary character; colour will hide it anyway.
-            return '_'; 
+            if (stateData.discovered === true) {
+                // Invisible but discovered: show wall/floor/etc
+                return Tile.VALID_STATES_DISPLAY[stateData.type];
+            } else {
+                // Rendering a space here, doesn't render the element; &nbsp; doesn't render decoded either.
+                // So, we render an arbitrary character; colour will hide it anyway.
+                return '_'; 
+            }
         } else {
-            var stateData = this.state["data"];
             if (stateData.occupant != null) {
                 return stateData.occupant.DISPLAY_CHARACTER;
             } else {
@@ -54,15 +56,21 @@ class Tile extends React.Component {
     }
 
     getColour() {
+        var stateData = this.state["data"];
+
         if (this.state["isVisible"]) {
-            var stateData = this.state["data"];
             if (stateData.occupant != null) {
                 return stateData.occupant.BASE_COLOUR;
             } else {
                 return Tile.TYPE_COLOURS[stateData.type];
             }
         } else {
-            return "black";
+            if (stateData.discovered === true) {
+                // return based on floor/wall/etc
+                return "#444";
+            } else {
+                return "black";
+            }
         }
     }
 }

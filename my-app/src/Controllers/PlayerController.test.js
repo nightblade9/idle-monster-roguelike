@@ -10,7 +10,6 @@ it('tryMovePlayer throws if direction is invalid', () => {
 
 it('tryMovePlayer returns gameData.tryToMove if direction is legit', () => {
   var gameData = new GameData();
-  var player = gameData.player;
   var controller = new PlayerController(gameData);
 
   var actual = controller.tryMovePlayer(Directions.UP);
@@ -24,4 +23,34 @@ it('tryMovePlayer returns gameData.tryToMove if direction is legit', () => {
 
   actual = controller.tryMovePlayer(Directions.UP);
   expect(actual).toBe(false);
-})
+});
+
+it('tryMovePlayer discovers tiles in the FOV if moved', () => {
+  // Arrange
+  var gameData = new GameData();
+  var player = gameData.player;
+  player.x = 3;
+  player.y = 3;
+  
+  // just check one tile
+  var fovTile = gameData.currentMap[player.x - 1, player.y]; 
+  fovTile.discovered = false;
+  
+  // Act
+  var controller = new PlayerController(gameData);
+  controller.tryMovePlayer(Directions.UP);
+
+  // Assert
+  expect(fovTile.discovered).toBe(true);
+});
+
+it('getPlayerFovTiles gets tiles around player', () => {
+  var gameData = new GameData();
+  var player = gameData.player;
+  player.x = 20;
+  player.y = 10;
+
+  var controller = new PlayerController(gameData);
+  var actual = controller.getPlayerFovTiles();
+  expect(actual.length).toBe(47); // manually verified
+});

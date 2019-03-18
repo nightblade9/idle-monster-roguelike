@@ -1,5 +1,10 @@
 import TileModel from "./TileModel";
 
+it('discovered defaults to false', () => {
+  var tile = new TileModel("floor");
+  expect(tile.discovered).toBe(false);
+})
+
 it('sets type to the constructor value', () => {
   var constructorValue = "wall";
   var tileModel = new TileModel(constructorValue);
@@ -37,3 +42,15 @@ it('isWalkable is false if state is wall and unoccupied', () => {
   tileModel.empty();
   expect(tileModel.isWalkable()).toBe(false);
 });
+
+it('discover sets dsicovered to true', () => {
+  var tileModel = new TileModel("Wall");
+  tileModel.discovered = false;
+
+  tileModel.discover();
+  expect(tileModel.discovered).toBe(true);
+
+  // Rediscover? Still true!
+  tileModel.discover();
+  expect(tileModel.discovered).toBe(true);
+})

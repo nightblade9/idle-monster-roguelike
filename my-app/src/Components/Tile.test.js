@@ -39,3 +39,33 @@ it("renders a wall tile with an empty character placeholder when out of players 
 
   ReactDOM.unmountComponentAtNode(div);
 })
+
+it("renders contents if a tile has occupant and is in sight", () => {
+  const div = document.createElement('div');
+  var player = new Player(30, 20);
+  var model = new TileModel("floor");
+  model.occupy(player);
+  ReactDOM.render(<Tile contents={model} x={player.x} y={player.y} player={player} />, div);
+  expect(div.children.length).toBe(1);
+
+  var contentDiv = div.children[0];
+  expect(contentDiv.innerHTML).toBe("@")
+
+  ReactDOM.unmountComponentAtNode(div);
+});
+
+it('renders floor/wall character if discovered but out of sight', () => {
+  const div = document.createElement('div');
+  var player = new Player(30, 20);
+
+  var occupant = Object.assign({}, {DISPLAY_CHARACTER: 'a'});
+  var model = new TileModel("floor");
+  // Shouldn't see 'a', should see '.'
+  model.occupy(occupant);
+  
+  ReactDOM.render(<Tile contents={model} x={player.x} y={player.y} player={player} />, div);
+  expect(div.children.length).toBe(1);
+  
+  var contentDiv = div.children[0];
+  expect(contentDiv.innerHTML).toBe("a")
+})

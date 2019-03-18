@@ -3,6 +3,7 @@ class Tile {
     constructor(type) {
         this.type = type; // "floor", "wall", etc.
         this.occupant = null; // just one person
+        this.discovered = false; // fog of war
     }
 
     occupy = (occupant) => {
@@ -15,6 +16,10 @@ class Tile {
 
     isWalkable = () => {
         return this.type === "floor" && this.occupant == null;
+    }
+
+    discover = () => {
+        this.discovered = true;
     }
 }
 

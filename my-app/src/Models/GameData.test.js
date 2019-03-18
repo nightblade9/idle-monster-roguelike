@@ -112,3 +112,21 @@ it('tryMovePlayer does not move player if target tile is already occupied', () =
   playerTile = gameData.currentMap[playerIndex];
   expect(playerTile.occupant).toBe(player);
 });
+
+it('getTile gets tile at specified coordinates', () => {
+  var gameData = new GameData();
+  var x = 17;
+  var y = 13;
+
+  var index = gameData.coordinatesToIndex(x, y);
+  var expectedTile = gameData.currentMap[index];
+  var actualTile = gameData.getTile(x, y);
+
+  expect(expectedTile).toBe(actualTile);
+});
+
+it('getTile returns null if tile is out of bounds', () => {
+  var gameData = new GameData();
+  var actual = gameData.getTile(999, 9);
+  expect(actual).toBe(null);
+});
