@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import GameGrid from './GameGrid';
-import GameData from './../Models/GameData';
+import Game from './Game';
+import GameData from '../Models/GameData';
 
 it('renders without crashing and has a grid div with some tiles', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<GameGrid gameData={new GameData()} />, div);
+  ReactDOM.render(<Game gameData={new GameData()} />, div);
   expect(div.children.length).toBe(1);
 
   var controllerDiv = div.children[0];

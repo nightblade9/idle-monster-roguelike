@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import './App.css';
 
-import GameGrid from './Components/GameGrid';
+import Game from './Components/Game';
 import GameData from './Models/GameData';
 
 class App extends Component {
@@ -14,7 +14,7 @@ class App extends Component {
 
   render() {
     return (
-      <GameGrid gameData={this.gameData} />
+      <Game gameData={this.gameData} />
     );
   }
 }

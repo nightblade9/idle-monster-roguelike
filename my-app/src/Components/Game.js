@@ -13,7 +13,7 @@ const KEY_TO_DIRECTION = {
 
 }
 
-class GameGrid extends React.Component {
+class Game extends React.Component {
 
     constructor(props) {
         super(props);
@@ -64,4 +64,4 @@ class GameGrid extends React.Component {
     }
 }
 
-export default GameGrid;
+export default Game;
