@@ -1,8 +1,8 @@
-const Directions = {
+const Direction = {
     UP: "up",
     RIGHT: "right",    
     DOWN: "down",
     LEFT: "left"
 }
 
-export default Directions;
+export default Direction;

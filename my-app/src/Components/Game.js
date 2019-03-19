@@ -1,15 +1,15 @@
 import React from 'react';
 
-import Directions from '../Enums/Direction';
+import Direction from '../Enums/Direction';
 import PlayerController from '../Controllers/PlayerController';
 import StatusBar from './StatusBar';
 import Tile from './Tile';
 
 const KEY_TO_DIRECTION = {
-    "w": Directions.UP,
-    "a": Directions.LEFT,
-    "s": Directions.DOWN,
-    "d": Directions.RIGHT
+    "w": Direction.UP,
+    "a": Direction.LEFT,
+    "s": Direction.DOWN,
+    "d": Direction.RIGHT
 
 }
 

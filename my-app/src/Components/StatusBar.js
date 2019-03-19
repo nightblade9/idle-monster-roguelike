@@ -9,7 +9,7 @@ class StatusBar extends React.Component {
 
     render() {
         return (
-            <div id="statusBar">Direction goes here
+            <div id="statusBar">Facing {this.state["gameData"].player.facing}
                 <div id="debug">Player is at {this.state["gameData"].player.x}, {this.state["gameData"].player.y}</div>
             </div>
         );

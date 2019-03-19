@@ -1,4 +1,4 @@
-import Directions from '../Enums/Direction';
+import Direction from '../Enums/Direction';
 
 class PlayerController {
     constructor(gameData) {
@@ -12,16 +12,16 @@ class PlayerController {
         var newY = player.y;
 
         switch (direction) {
-            case Directions.UP:
+            case Direction.UP:
                 newY -= 1;
                 break;
-            case Directions.RIGHT:
+            case Direction.RIGHT:
                 newX += 1;
                 break;
-            case Directions.DOWN:
+            case Direction.DOWN:
                 newY += 1;
                 break;
-            case Directions.LEFT: 
+            case Direction.LEFT: 
                 newX -= 1;
                 break;
             default:
@@ -32,6 +32,7 @@ class PlayerController {
             var isPlayerMoved = this.gameData.tryMovePlayer(newX, newY);
 
             if (isPlayerMoved) {
+                this.gameData.player.facing = direction;
                 var fovTiles = this.getPlayerFovTiles();
                 
                 for (var i = 0; i < fovTiles.length; i++) {

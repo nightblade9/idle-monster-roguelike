@@ -5,7 +5,7 @@ import GameData from '../Models/GameData';
 import Player from '../Models/PlayerModel';
 import StatusBar from './StatusBar';
 
-it('renders a statusBar div with a debug div containing coordinates', () => {
+it('renders a statusBar div containing direction, with a debug div containing coordinates', () => {
   // Arrange
   const div = document.createElement('div');
   var gameData = new GameData();
@@ -18,6 +18,7 @@ it('renders a statusBar div with a debug div containing coordinates', () => {
   expect(gameData.player.y).toBe(13);
   
   ReactDOM.render(<StatusBar gameData={gameData} />, div);
+  expect(div.textContent).toContain(gameData.player.facing);
   expect(div.children.length).toBe(1);
   var mainDiv = div.children[0];
   expect(mainDiv.id).toBe("statusBar");

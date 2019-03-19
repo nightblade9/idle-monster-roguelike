@@ -1,6 +1,6 @@
 import GameData from '../Models/GameData'
 import PlayerController from "./PlayerController";
-import Directions from '../Enums/Direction';
+import Direction from '../Enums/Direction';
 
 it('tryMovePlayer throws if direction is invalid', () => {
   var gameData = new GameData();
@@ -8,21 +8,23 @@ it('tryMovePlayer throws if direction is invalid', () => {
   expect(function() { controller.tryMovePlayer("180 Degrees"); }).toThrow();
 });
 
-it('tryMovePlayer returns gameData.tryToMove if direction is legit', () => {
+it('tryMovePlayer returns gameData.tryToMove and sets player direction if direction is legit', () => {
   var gameData = new GameData();
+  gameData.player.facing = Direction.UP;
   var controller = new PlayerController(gameData);
 
-  var actual = controller.tryMovePlayer(Directions.UP);
+  var actual = controller.tryMovePlayer(Direction.UP);
   expect(actual).toBe(true);
 
   // Move up until we bump into a wall
   var n = 10;
   while (n-- > 0) {
-    controller.tryMovePlayer(Directions.UP);
+    controller.tryMovePlayer(Direction.DOWN);
   }
 
-  actual = controller.tryMovePlayer(Directions.UP);
+  actual = controller.tryMovePlayer(Direction.DOWN);
   expect(actual).toBe(false);
+  expect(gameData.player.facing).toBe(Direction.DOWN);
 });
 
 it('tryMovePlayer discovers tiles in the FOV if moved', () => {
@@ -38,7 +40,7 @@ it('tryMovePlayer discovers tiles in the FOV if moved', () => {
   
   // Act
   var controller = new PlayerController(gameData);
-  controller.tryMovePlayer(Directions.UP);
+  controller.tryMovePlayer(Direction.UP);
 
   // Assert
   expect(fovTile.discovered).toBe(true);
