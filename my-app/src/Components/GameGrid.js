@@ -2,6 +2,7 @@ import React from 'react';
 
 import Directions from '../Enums/Direction';
 import PlayerController from '../Controllers/PlayerController';
+import StatusBar from './StatusBar';
 import Tile from './Tile';
 
 const KEY_TO_DIRECTION = {
@@ -44,6 +45,8 @@ class GameGrid extends React.Component {
                 <div id="grid" style={{color: "white", fontFamily: 'Roboto Mono, monospace', fontSize: "18px", width: 450}}>
                     {this.createTiles()}
                 </div>
+
+                <StatusBar gameData={this.state["gameData"]} />
             </div>
         )
     }
@@ -54,7 +57,8 @@ class GameGrid extends React.Component {
             var directionPressed = KEY_TO_DIRECTION[keyPressed];        
             var isPlayerMoved = this.playerController.tryMovePlayer(directionPressed);
             if (isPlayerMoved) {
-                this.setState({"gameData": this.state["gameData"]}); // Refresh
+                //this.setState({"gameData": this.state["gameData"]}); // Refresh
+                this.setState({"gameData": Object.assign({}, this.state["gameData"])});
             }
         }
     }

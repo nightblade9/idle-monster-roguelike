@@ -10,7 +10,7 @@ it('renders without crashing and has a grid div with some tiles', () => {
 
   var controllerDiv = div.children[0];
   expect(controllerDiv.id).toBe("playerController")
-  expect(controllerDiv.children.length).toBe(1);
+  expect(controllerDiv.children.length).toBe(2);
 
   var gridDiv = controllerDiv.children[0];
   expect(gridDiv.id).toBe("grid")

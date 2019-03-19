@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import GameData from './Models/GameData';
 
 import './App.css';
+
 import GameGrid from './Components/GameGrid';
+import GameData from './Models/GameData';
 
 class App extends Component {
 

@@ -9,7 +9,6 @@ it('renders without crashing and has a container div with a player controller', 
 
   var containerDiv = div.children[0];
   expect(containerDiv.id).toBe("playerController")
-  expect(containerDiv.children.length).toBe(1)
 
   ReactDOM.unmountComponentAtNode(div);
 });
