@@ -4,6 +4,7 @@ import Direction from '../Enums/Direction';
 import PlayerController from '../Controllers/PlayerController';
 import StatusBar from './StatusBar';
 import Tile from './Tile';
+import FpsCounter from '../Models/FpsCounter';
 
 const KEY_TO_DIRECTION = {
     "w": Direction.UP,
@@ -12,7 +13,7 @@ const KEY_TO_DIRECTION = {
     "d": Direction.RIGHT
 }
 
-const TARGET_FPS = 60
+const TARGET_FPS = 30;
 
 class Game extends React.Component {
 
@@ -22,8 +23,7 @@ class Game extends React.Component {
         this.playerController = new PlayerController(props.gameData);
 
         if ("enableConstantRendering" in props) {
-            // Stored in an object, because passing primitives here, doesn't notify/update in React.
-            this.fpsStats = {"drawCalls": 0, "lastFpsUpdate": Date.now(), "fps": 0};
+            this.fpsCounter = new FpsCounter();
             this.enableConstantRendering = props["enableConstantRendering"];
         }
     }
@@ -32,7 +32,7 @@ class Game extends React.Component {
     // https://stackoverflow.com/questions/36299174/setinterval-in-a-react-app
     componentDidMount =  () => {
         if (this.enableConstantRendering) {
-            var intervalId = setInterval(this.onTick, 1000 / TARGET_FPS);
+            var intervalId = setInterval(this.onUpdate, 1000 / TARGET_FPS);
             // store intervalId in the state so it can be accessed later:
             this.setState({intervalId: intervalId});
         }
@@ -45,23 +45,12 @@ class Game extends React.Component {
         }
      }
      
-     onTick = () => {
+     onUpdate = () => {
         // setState method is used to force an update
         this.setState(this.state);
-
-        var lastUpdate = this.fpsStats["lastFpsUpdate"];
-        var now = Date.now();
-
-        var elapsedSeconds = (now - lastUpdate) / 1000;
-        if (elapsedSeconds >= 1) {
-            var fps = this.fpsStats["drawCalls"] / elapsedSeconds;
-            console.log(fps + " FPS");
-            this.fpsStats.fps = Math.round(fps);
-            this.fpsStats["drawCalls"] = 0;
-            this.fpsStats["lastFpsUpdate"] = now;
-        }
+        this.fpsCounter.onUpdate();
      }
-     
+
     // END REGION
 
     createTiles = () => {
@@ -82,7 +71,7 @@ class Game extends React.Component {
     }
 
     render() {
-        this.fpsStats["drawCalls"] += 1;
+        this.fpsCounter.onRender();
 
         return(
              // https://stackoverflow.com/questions/3149362/capture-key-press-or-keydown-event-on-div-element
@@ -91,7 +80,7 @@ class Game extends React.Component {
                     {this.createTiles()}
                 </div>
 
-                <StatusBar gameData={this.state["gameData"]} fpsStats={this.fpsStats} />
+                <StatusBar gameData={this.state["gameData"]} fpsCounter={this.fpsCounter} />
             </div>
         );
     }
