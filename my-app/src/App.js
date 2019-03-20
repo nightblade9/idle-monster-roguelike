@@ -14,7 +14,7 @@ class App extends Component {
 
   render() {
     return (
-      <Game gameData={this.gameData} />
+      <Game gameData={this.gameData} enableConstantRendering="true" />
     );
   }
 }
