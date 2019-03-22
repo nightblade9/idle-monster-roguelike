@@ -21,9 +21,10 @@ class Game extends React.Component {
         super(props);
         this.state = {"gameData": props.gameData};
         this.playerController = new PlayerController(props.gameData);
+        this.enableConstantRendering = false;
+        this.fpsCounter = new FpsCounter();
 
         if ("enableConstantRendering" in props) {
-            this.fpsCounter = new FpsCounter();
             this.enableConstantRendering = props["enableConstantRendering"];
         }
     }
