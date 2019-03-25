@@ -19,6 +19,7 @@ const KEY_TO_DIRECTION = {
 const FIRE_KEY = 'f';
 
 const TARGET_FPS = 30;
+const EFFECT_STEP_DISPLAY_TIME_MLLISECONDS = 100;
 
 class Game extends React.Component {
 
@@ -130,14 +131,10 @@ class Game extends React.Component {
             var projectile = new Projectile(startX, startY, player.facing);
             var path = this.projectileController.getProjectilePath(projectile);
             var isFacingHorizontal = player.facing === Direction.LEFT || player.facing === Direction.RIGHT;
-            var tile = this.state["gameData"].getTile(startX, startY);
-            tile.effect = new Effect(isFacingHorizontal ? '-' : '|', "#f00");
+            var effect = new Effect(isFacingHorizontal ? '-' : '|', "#f00");
 
-            // player.freeze()
-            // projectileController.moveUntilDestroyed(projectile, path, 250ms)
-            // player.unfreeze
-
-            refreshView = true;
+            player.canMove = false;
+            this.projectileController.moveUntilDestroyed(projectile, path, EFFECT_STEP_DISPLAY_TIME_MLLISECONDS, effect, () => player.canMove = true);
         }
 
         if (refreshView) {

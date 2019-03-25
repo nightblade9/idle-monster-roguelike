@@ -52,6 +52,36 @@ class ProjectileController {
 
         return false;
     }
+
+    moveUntilDestroyed = (projectile, path, displayMillsecondsPerStep, effect, onCompleteCallback) => {
+        var currentIndex = 0;
+        var setIntervalCallback = () => {
+            if (currentIndex < path.length) {
+                var currentStep = path[currentIndex];
+
+                if (currentIndex > 0) {
+                    this.gameData.getTile(projectile.x, projectile.y).effect = null;
+                }
+                
+                projectile.x = currentStep.x;
+                projectile.y = currentStep.y;
+                var currentTile = this.gameData.getTile(projectile.x, projectile.y);
+                currentTile.effect = effect;
+                currentTile.discovered = true;                
+
+                currentIndex++;
+                console.log("step " + currentIndex);
+            } else {
+                console.log("Done");
+                clearInterval(intervalId);
+                this.gameData.getTile(projectile.x, projectile.y).effect = null;
+                onCompleteCallback();
+            }
+        }
+
+        var intervalId = setInterval(setIntervalCallback, displayMillsecondsPerStep);
+        setIntervalCallback();
+    }
 }
 
 export default ProjectileController;
