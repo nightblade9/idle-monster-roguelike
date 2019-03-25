@@ -9,11 +9,13 @@ class ProjectileController {
     // Move a projectile until it's untimely demise.
     getProjectilePath = (projectile) => {
         var path = [];
-        path.push({x: projectile.x, y: projectile.y});
 
-        while (!this.shouldBeDestroyed(projectile)) {
-            this.moveProjectile(projectile);
-            path.push({x: projectile.x, y: projectile.y});
+        var copy = Object.assign({}, projectile);
+        path.push({x: copy.x, y: copy.y});
+
+        while (!this.shouldBeDestroyed(copy)) {
+            this.moveProjectile(copy);
+            path.push({x: copy.x, y: copy.y});
         }
 
         return path;
@@ -44,6 +46,7 @@ class ProjectileController {
         }
 
         var tile = this.gameData.getTile(projectile.x, projectile.y);
+        console.log("@@@ tile=" + projectile.x + ", " + projectile.y);
         if (!tile.isWalkable()) {
             return true;
         }

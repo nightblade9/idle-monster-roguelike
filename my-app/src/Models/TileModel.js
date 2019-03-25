@@ -4,6 +4,7 @@ class Tile {
         this.type = type; // "floor", "wall", etc.
         this.occupant = null; // just one person
         this.discovered = false; // fog of war
+        this.effect = null; // ephermal effect, eg. explosion
     }
 
     occupy = (occupant) => {

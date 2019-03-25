@@ -1,8 +1,10 @@
 import React from 'react';
 
 import Direction from '../Enums/Direction';
+import Effect from '../Models/Effect';
 import FpsCounter from '../Models/FpsCounter';
 import PlayerController from '../Controllers/PlayerController';
+import Projectile from '../Models/Projectile';
 import ProjectileController from '../Controllers/ProjectileController';
 import StatusBar from './StatusBar';
 import Tile from './Tile';
@@ -125,7 +127,16 @@ class Game extends React.Component {
                     throw Error("Not sure how to set projectile position based on a bullet facing " + player.facing);
             }
 
-            this.projectileController.getProjectilePath(startX, startY, player.facing);
+            var projectile = new Projectile(startX, startY, player.facing);
+            var path = this.projectileController.getProjectilePath(projectile);
+            var isFacingHorizontal = player.facing === Direction.LEFT || player.facing === Direction.RIGHT;
+            var tile = this.state["gameData"].getTile(startX, startY);
+            tile.effect = new Effect(isFacingHorizontal ? '-' : '|', "#f00");
+
+            // TODO: Catch up tests for HEAD to HEAD~1
+            // player.freeze()
+            // projectileController.moveUntilDestroyed(projectile, path, 250ms)
+            // player.unfreeze
 
             refreshView = true;
         }

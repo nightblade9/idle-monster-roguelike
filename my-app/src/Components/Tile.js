@@ -47,7 +47,9 @@ class Tile extends React.Component {
                 return '_'; 
             }
         } else {
-            if (stateData.occupant != null) {
+            if (stateData.effect != null) {
+                return stateData.effect.character;
+            } else if (stateData.occupant != null) {
                 return stateData.occupant.DISPLAY_CHARACTER;
             } else {
                 return Tile.VALID_STATES_DISPLAY[stateData.type];
@@ -59,7 +61,9 @@ class Tile extends React.Component {
         var stateData = this.state["data"];
 
         if (this.state["isVisible"]) {
-            if (stateData.occupant != null) {
+            if (stateData.effect != null) {
+                return stateData.effect.colour;
+            } else if (stateData.occupant != null) {
                 return stateData.occupant.BASE_COLOUR;
             } else {
                 return Tile.TYPE_COLOURS[stateData.type];
