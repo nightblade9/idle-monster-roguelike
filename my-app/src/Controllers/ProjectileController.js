@@ -1,7 +1,7 @@
 import Projectile from "../Models/Projectile";
 import Direction from "../Enums/Direction";
 
-class ProjectileSystem {
+class ProjectileController {
 
     constructor(gameData) {
         this.gameData = gameData
@@ -17,6 +17,7 @@ class ProjectileSystem {
                 var projectile = projectiles[i];
                 this.moveProjectile(projectile);
                 if (this.isDestroyed(projectile)) {
+                    // Remove from array
                     var index = projectiles.indexOf(projectile);
                     projectiles.splice(index, 1);
                 }
@@ -61,4 +62,4 @@ class ProjectileSystem {
     }
 }
 
-export default ProjectileSystem;
+export default ProjectileController;

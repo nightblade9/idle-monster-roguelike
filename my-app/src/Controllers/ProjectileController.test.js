@@ -1,11 +1,11 @@
 import Direction from "../Enums/Direction";
-import ProjectileSystem from "./ProjectileSystem";
+import ProjectileController from "./ProjectileController";
 import GameData from '../Models/GameData';
 import Projectile from "../Models/Projectile";
 
 it('moveProjectile moves it in all four compass directions', () => {
   var gameData = new GameData();
-  var system = new ProjectileSystem(gameData);
+  var system = new ProjectileController(gameData);
   
   var projectile = new Projectile(3, 3, Direction.UP);
   system.moveProjectile(projectile)
@@ -30,7 +30,7 @@ it('moveProjectile moves it in all four compass directions', () => {
 
 it('isDestroyed returns true if projectile is out of bounds', () => {
   var gameData = new GameData();
-  var system = new ProjectileSystem(gameData);
+  var system = new ProjectileController(gameData);
 
   // baseline / positive test case
   var projectile = new Projectile(5, 5, Direction.UP);
@@ -51,13 +51,13 @@ it('isDestroyed returns true if projectile is out of bounds', () => {
 
 it('isDestroyed returns true if projectil tile is a wall', () => {
   var gameData = new GameData();
-  var system = new ProjectileSystem(gameData);
+  var system = new ProjectileController(gameData);
   var projectile = new Projectile(0, 7); // walls along the top
   expect(system.isDestroyed(projectile)).toBe(true);
 })
 
 it('processProjectile does not freeze', () => {
   var gameData = new GameData();
-  var system = new ProjectileSystem(gameData);
+  var system = new ProjectileController(gameData);
   system.processProjectile(7, 7, Direction.UP); // hits top wall and 'splodes
 });
