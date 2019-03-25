@@ -1,4 +1,3 @@
-import Projectile from "../Models/Projectile";
 import Direction from "../Enums/Direction";
 
 class ProjectileController {
@@ -8,21 +7,16 @@ class ProjectileController {
     }
 
     // Move a projectile until it's untimely demise.
-    // TODO: accept an array of projectiles instead. Isn't that right, Spazer?
-    processProjectile = (x, y, direction) => {
-        var projectiles = [new Projectile(x, y, direction)];
+    getProjectilePath = (projectile) => {
+        var path = [];
+        path.push({x: projectile.x, y: projectile.y});
 
-        while (projectiles.length > 0) {
-            for (var i = 0; i < projectiles.length; i++) {
-                var projectile = projectiles[i];
-                this.moveProjectile(projectile);
-                if (this.isDestroyed(projectile)) {
-                    // Remove from array
-                    var index = projectiles.indexOf(projectile);
-                    projectiles.splice(index, 1);
-                }
-            }
+        while (!this.shouldBeDestroyed(projectile)) {
+            this.moveProjectile(projectile);
+            path.push({x: projectile.x, y: projectile.y});
         }
+
+        return path;
     }
 
     moveProjectile = (projectile) => {
@@ -40,21 +34,17 @@ class ProjectileController {
                 projectile.x -= 1;
                 break;
             default:
-                throw "Not sure how to move projectile in direction=" + projectile.facing;
+                throw Error("Not sure how to move projectile in direction=" + projectile.facing);
         }
     }
 
-    isDestroyed = (projectile) => {
+    shouldBeDestroyed = (projectile) => {
         if (projectile.x < 0 || projectile.x >= this.gameData.mapWidth || projectile.y < 0 || projectile.y >= this.gameData.mapHeight) {
             return true;
         }
 
         var tile = this.gameData.getTile(projectile.x, projectile.y);
         if (!tile.isWalkable()) {
-            var occupant = tile.occupant;
-            if (occupant != null) {
-                // damage occupant
-            }
             return true;
         }
 

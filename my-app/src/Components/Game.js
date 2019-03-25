@@ -1,10 +1,11 @@
 import React from 'react';
 
 import Direction from '../Enums/Direction';
+import FpsCounter from '../Models/FpsCounter';
 import PlayerController from '../Controllers/PlayerController';
+import ProjectileController from '../Controllers/ProjectileController';
 import StatusBar from './StatusBar';
 import Tile from './Tile';
-import FpsCounter from '../Models/FpsCounter';
 
 const KEY_TO_DIRECTION = {
     "w": Direction.UP,
@@ -13,14 +14,19 @@ const KEY_TO_DIRECTION = {
     "d": Direction.RIGHT
 }
 
+const FIRE_KEY = 'f';
+
 const TARGET_FPS = 30;
 
 class Game extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {"gameData": props.gameData};
-        this.playerController = new PlayerController(props.gameData);
+
+        var gameData = props.gameData;
+        this.state = {"gameData": gameData};
+        this.playerController = new PlayerController(gameData);
+        this.projectileController = new ProjectileController(gameData);
         this.enableConstantRendering = false;
         this.fpsCounter = new FpsCounter();
 
@@ -86,15 +92,46 @@ class Game extends React.Component {
         );
     }
 
-    handleKeyPress = (event) => {
+    handleKeyPress = async (event) => {
+        var refreshView = false;
         var keyPressed = event.key;
+
         if (keyPressed in KEY_TO_DIRECTION) {
             var directionPressed = KEY_TO_DIRECTION[keyPressed];        
             var isPlayerMoved = this.playerController.tryMovePlayer(directionPressed);
             if (isPlayerMoved) {
-                //this.setState({"gameData": this.state["gameData"]}); // Refresh
-                this.setState({"gameData": Object.assign({}, this.state["gameData"])});
+                refreshView = true;
             }
+        } else if (keyPressed === FIRE_KEY) {
+            var player = this.state["gameData"].player;
+
+            var startX = player.x;
+            var startY = player.y;
+
+            switch (player.facing) {
+                case Direction.UP:
+                    startY -= 1;
+                    break;
+                case Direction.RIGHT:
+                    startX += 1;
+                    break;
+                case Direction.DOWN:
+                    startY += 1;
+                    break;
+                case Direction.LEFT:
+                    startX -= 1;
+                    break;
+                default:
+                    throw Error("Not sure how to set projectile position based on a bullet facing " + player.facing);
+            }
+
+            this.projectileController.getProjectilePath(startX, startY, player.facing);
+
+            refreshView = true;
+        }
+
+        if (refreshView) {
+            this.setState({"gameData": Object.assign({}, this.state["gameData"])}); // Refresh
         }
     }
 }
