@@ -7,6 +7,7 @@ class PlayerModel {
     y = 0;
     sightRadius = 4;
     facing = Direction.UP;
+    canMove = true;
 
     constructor(x, y) {
         this.x = x;

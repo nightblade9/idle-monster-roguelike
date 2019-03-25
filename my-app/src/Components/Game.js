@@ -133,7 +133,6 @@ class Game extends React.Component {
             var tile = this.state["gameData"].getTile(startX, startY);
             tile.effect = new Effect(isFacingHorizontal ? '-' : '|', "#f00");
 
-            // TODO: Catch up tests for HEAD to HEAD~1
             // player.freeze()
             // projectileController.moveUntilDestroyed(projectile, path, 250ms)
             // player.unfreeze

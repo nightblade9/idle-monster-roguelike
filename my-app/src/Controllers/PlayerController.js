@@ -8,41 +8,45 @@ class PlayerController {
     tryMovePlayer = (direction) => {
             
         var player = this.gameData.player;
-        var newX = player.x;
-        var newY = player.y;
+        if (player.canMove) {
+            var newX = player.x;
+            var newY = player.y;
 
-        switch (direction) {
-            case Direction.UP:
-                newY -= 1;
-                break;
-            case Direction.RIGHT:
-                newX += 1;
-                break;
-            case Direction.DOWN:
-                newY += 1;
-                break;
-            case Direction.LEFT: 
-                newX -= 1;
-                break;
-            default:
-                throw Error("Invalid direction: " + direction);
-        }
-
-        if (newX !== player.x || newY !== player.y) {
-            var isPlayerMoved = this.gameData.tryMovePlayer(newX, newY);
-
-            if (isPlayerMoved) {
-                this.gameData.player.facing = direction;
-                var fovTiles = this.getPlayerFovTiles();
-                
-                for (var i = 0; i < fovTiles.length; i++) {
-                    var fovTile = fovTiles[i];
-                    fovTile.discover();
-                }
-
+            switch (direction) {
+                case Direction.UP:
+                    newY -= 1;
+                    break;
+                case Direction.RIGHT:
+                    newX += 1;
+                    break;
+                case Direction.DOWN:
+                    newY += 1;
+                    break;
+                case Direction.LEFT: 
+                    newX -= 1;
+                    break;
+                default:
+                    throw Error("Invalid direction: " + direction);
             }
-            return isPlayerMoved;
+
+            if (newX !== player.x || newY !== player.y) {
+                var isPlayerMoved = this.gameData.tryMovePlayer(newX, newY);
+
+                if (isPlayerMoved) {
+                    this.gameData.player.facing = direction;
+                    var fovTiles = this.getPlayerFovTiles();
+                    
+                    for (var i = 0; i < fovTiles.length; i++) {
+                        var fovTile = fovTiles[i];
+                        fovTile.discover();
+                    }
+
+                }
+                return isPlayerMoved;
+            }
         }
+
+        return false; // Didn't move, frozen
     }
 
     getPlayerFovTiles = () => {

@@ -56,3 +56,18 @@ it('getPlayerFovTiles gets tiles around player', () => {
   var actual = controller.getPlayerFovTiles();
   expect(actual.length).toBe(47); // manually verified
 });
+
+it("tryMovePlayer doesn't move the player if canMove=false", () => {
+  var gameData = new GameData();
+  var controller = new PlayerController(gameData);
+
+  var expectedCoordinates = [gameData.player.x, gameData.player.y];
+  gameData.player.facing = Direction.DOWN;
+  gameData.player.canMove = false;
+  var actual = controller.tryMovePlayer(Direction.UP);
+  var actualCoordinates = [gameData.player.x, gameData.player.y];
+
+  expect(actual).toBe(false);
+  expect(gameData.player.facing).toBe(Direction.DOWN);
+  expect(actualCoordinates.toString()).toBe(expectedCoordinates.toString());
+})
