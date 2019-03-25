@@ -60,20 +60,20 @@ class Tile extends React.Component {
     getColour() {
         var stateData = this.state["data"];
 
-        if (this.state["isVisible"]) {
+        if (!this.state["isVisible"]) {
+            if (stateData.discovered === true) {
+                // return based on floor/wall/etc
+                return "#444";
+            } else {
+                return "black";
+            }
+        } else {
             if (stateData.effect != null) {
                 return stateData.effect.colour;
             } else if (stateData.occupant != null) {
                 return stateData.occupant.BASE_COLOUR;
             } else {
                 return Tile.TYPE_COLOURS[stateData.type];
-            }
-        } else {
-            if (stateData.discovered === true) {
-                // return based on floor/wall/etc
-                return "#444";
-            } else {
-                return "black";
             }
         }
     }

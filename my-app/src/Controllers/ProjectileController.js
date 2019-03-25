@@ -46,7 +46,6 @@ class ProjectileController {
         }
 
         var tile = this.gameData.getTile(projectile.x, projectile.y);
-        console.log("@@@ tile=" + projectile.x + ", " + projectile.y);
         if (!tile.isWalkable()) {
             return true;
         }

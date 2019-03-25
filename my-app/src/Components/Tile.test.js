@@ -1,8 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+
+import Effect from '../Models/Effect';
+import Player from '../Models/PlayerModel';
 import Tile from './Tile';
 import TileModel from '../Models/TileModel';
-import Player from '../Models/PlayerModel';
 
 it('renders as a floor tile if contents are specified as floor in players sight', () => {
   const div = document.createElement('div');
@@ -14,7 +16,7 @@ it('renders as a floor tile if contents are specified as floor in players sight'
   expect(contentDiv.innerHTML).toBe(".")
 
   ReactDOM.unmountComponentAtNode(div);
-});
+})
 
 it('renders as a wall tile if contents is specified as wall in players sight', () => {
   const div = document.createElement('div');
@@ -26,7 +28,7 @@ it('renders as a wall tile if contents is specified as wall in players sight', (
   expect(contentDiv.innerHTML).toBe("#")
 
   ReactDOM.unmountComponentAtNode(div);
-});
+})
 
 it("renders a wall tile with an empty character placeholder when out of players sight", () => {
   const div = document.createElement('div');
@@ -52,7 +54,7 @@ it("renders contents if a tile has occupant and is in sight", () => {
   expect(contentDiv.innerHTML).toBe("@")
 
   ReactDOM.unmountComponentAtNode(div);
-});
+})
 
 it('renders floor/wall character if discovered but out of sight', () => {
   const div = document.createElement('div');
@@ -68,4 +70,18 @@ it('renders floor/wall character if discovered but out of sight', () => {
   
   var contentDiv = div.children[0];
   expect(contentDiv.innerHTML).toBe("a")
+})
+
+it('renders effects when set and in-sight', () => {
+  const div = document.createElement('div');
+  var player = new Player(3, 2);
+  var model = new TileModel("floor");
+  model.effect = new Effect('*', '#f80');
+  ReactDOM.render(<Tile contents={model} x={player.x} y={player.y} player={player} />, div);
+  expect(div.children.length).toBe(1);
+
+  var contentDiv = div.children[0];
+  expect(contentDiv.innerHTML).toBe("*")
+
+  ReactDOM.unmountComponentAtNode(div);
 })
