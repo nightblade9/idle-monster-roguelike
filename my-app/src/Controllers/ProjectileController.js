@@ -1,9 +1,12 @@
 import Direction from "../Enums/Direction";
+import PlayerController from "./PlayerController";
 
 class ProjectileController {
 
     constructor(gameData) {
-        this.gameData = gameData
+        this.gameData = gameData;
+        // Used for line-of-sight checks
+        this.playerController = new PlayerController(this.gameData);
     }
 
     // Move a projectile until it's untimely demise.
@@ -55,6 +58,14 @@ class ProjectileController {
 
     moveUntilDestroyed = (projectile, path, displayMillsecondsPerStep, effect, onCompleteCallback) => {
         var currentIndex = 0;
+        var playerFovTiles = this.playerController.getPlayerFovTiles();
+        
+        var onProjectileDestroyed = () => {
+            clearInterval(intervalId);
+            this.gameData.getTile(projectile.x, projectile.y).effect = null;
+            onCompleteCallback();
+        }
+
         var setIntervalCallback = () => {
             if (currentIndex < path.length) {
                 var currentStep = path[currentIndex];
@@ -67,16 +78,22 @@ class ProjectileController {
                 projectile.y = currentStep.y;
                 var currentTile = this.gameData.getTile(projectile.x, projectile.y);
                 currentTile.effect = effect;
-                // TODO: don't want players to "scout" using this.
-                // But without it, if the shot leaves LOS, we should quickly calculate
-                // the remaining steps and just terminate abruptly; not make the player wait.
-                currentTile.discovered = true;                
-
+                
                 currentIndex++;
+                
+                var projectileTile = playerFovTiles.find(tile => tile.x === projectile.x && tile.y === projectile.y);
+                var isInSight = (typeof(projectileTile) !== "undefined");
+                if (!isInSight) {
+                    // Don't make the player wait until it gets destroyed.
+                    // TODO: process damage along the path. For now, just skip to the end.
+                    this.gameData.getTile(projectile.x, projectile.y).effect = null;
+                    var finalTile = path[path.length - 1];
+                    projectile.x = finalTile.x;
+                    projectile.y = finalTile.y;
+                    onProjectileDestroyed();
+                }
             } else {
-                clearInterval(intervalId);
-                this.gameData.getTile(projectile.x, projectile.y).effect = null;
-                onCompleteCallback();
+               onProjectileDestroyed();
             }
         }
 

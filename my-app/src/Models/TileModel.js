@@ -1,6 +1,8 @@
 // Should probably rename this to something other than "tile"
 class Tile {
-    constructor(type) {
+    constructor(x, y, type) {
+        this.x = x;
+        this.y = y;
         this.type = type; // "floor", "wall", etc.
         this.occupant = null; // just one person
         this.discovered = false; // fog of war

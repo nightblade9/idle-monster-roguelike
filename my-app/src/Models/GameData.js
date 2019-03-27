@@ -19,9 +19,9 @@ class GameData {
             for (let x = 0; x < MAP_TILES_WIDE; x++) {
                 var index = this.coordinatesToIndex(x, y);
                 if (x === 0 || y === 0 || x === MAP_TILES_WIDE - 1 || y === MAP_TILES_HIGH - 1) {
-                    this.currentMap[index] = new TileModel("wall");
+                    this.currentMap[index] = new TileModel(x, y, "wall");
                 } else {
-                    this.currentMap[index] = new TileModel("floor");
+                    this.currentMap[index] = new TileModel(x, y, "floor");
                 }
             }
         }

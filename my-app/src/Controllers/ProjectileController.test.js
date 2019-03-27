@@ -84,6 +84,9 @@ it('moveUntilDestroyed moves projectile periodically (setting effect) and execut
 
   // Arrange
   var gameData = new GameData();
+  // Stay in FOV, observe it hitting the wall
+  gameData.player.x = 2;
+  gameData.player.y = 2;
   var controller = new ProjectileController(gameData);
   // Travels to (0, 3) and poof!
   var projectile = new Projectile(3, 3, Direction.LEFT);
@@ -109,6 +112,43 @@ it('moveUntilDestroyed moves projectile periodically (setting effect) and execut
   // Move it three more times, should be destroyed
   clock.tick(millisecondsPerStep * 3);
   expect(projectile.x).toBe(0);
+  expect(projectile.y).toBe(3);
+
+  currentTile = gameData.getTile(projectile.x, projectile.y);
+  expect(currentTile.effect).toBe(null);
+
+  expect(calledOnComplete).toBe(true);
+})
+
+it('moveUntilDestroyed short-cuts projectile to end-path when it gies out of sight', () => {
+  var millisecondsPerStep = 50;
+
+  // Arrange
+  var gameData = new GameData();
+  // Map is wide. It should traverse all the way to the right-side.
+  gameData.player.x = 2;
+  gameData.player.y = 2;
+  var controller = new ProjectileController(gameData);
+  // Travels to (0, 3) and poof!
+  var projectile = new Projectile(3, 3, Direction.RIGHT);
+  var path = controller.getProjectilePath(projectile);
+  var effect = new Effect('%', "#ff0");
+  var calledOnComplete = false;
+
+  // Act/Assert
+  controller.moveUntilDestroyed(projectile, path, millisecondsPerStep, effect, () => calledOnComplete = true);
+
+  // Move and see it moved
+  clock.tick(millisecondsPerStep);
+  expect(projectile.x).toBe(4);
+  var currentTile = gameData.getTile(projectile.x, projectile.y);
+  expect(currentTile.effect).toBe(effect);
+  // Previously-occupied tile is empty of effects
+  expect(gameData.getTile(projectile.x + 1, projectile.y).effect).toBe(null);
+
+  // Move it a few more times, should go out of sight
+  clock.tick(millisecondsPerStep * 7);
+  expect(projectile.x).toBe(gameData.mapWidth - 1);
   expect(projectile.y).toBe(3);
 
   currentTile = gameData.getTile(projectile.x, projectile.y);
