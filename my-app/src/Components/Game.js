@@ -6,6 +6,7 @@ import FpsCounter from '../Models/FpsCounter';
 import PlayerController from '../Controllers/PlayerController';
 import Projectile from '../Models/Projectile';
 import ProjectileController from '../Controllers/ProjectileController';
+import ProjectileType from '../Enums/ProjectileType';
 import StatusBar from './StatusBar';
 import Tile from './Tile';
 
@@ -85,7 +86,7 @@ class Game extends React.Component {
 
         return(
              // https://stackoverflow.com/questions/3149362/capture-key-press-or-keydown-event-on-div-element
-            <div id="playerController" onKeyPress={this.handleKeyPress} tabIndex="0">
+            <div id="playerController" onKeyDown={this.onKeyDown} onKeyUp={this.onKeyUp} onKeyPress={this.onKeyPress} tabIndex="0">
                 <div id="grid" style={{color: "white", fontFamily: 'Roboto Mono, monospace', fontSize: "18px", width: 450}}>
                     {this.createTiles()}
                 </div>
@@ -95,17 +96,30 @@ class Game extends React.Component {
         );
     }
 
-    handleKeyPress = async (event) => {
-        var refreshView = false;
+    onKeyDown = async (event) => {
         var keyPressed = event.key;
 
         if (keyPressed in KEY_TO_DIRECTION) {
             var directionPressed = KEY_TO_DIRECTION[keyPressed];        
             var isPlayerMoved = this.playerController.tryMovePlayer(directionPressed);
             if (isPlayerMoved) {
-                refreshView = true;
+                this.refreshView();
             }
-        } else if (keyPressed === FIRE_KEY) {
+        }
+    }
+    
+    onKeyPress = async (event) => {
+        var keyPressed = event.key;
+
+        if (keyPressed === FIRE_KEY) {
+            this.state["gameData"].player.chargeShot();
+        }
+    }
+
+    onKeyUp = async (event) => {
+        var keyPressed = event.key;
+
+        if (keyPressed === FIRE_KEY) {
             var player = this.state["gameData"].player;
 
             var startX = player.x;
@@ -131,15 +145,29 @@ class Game extends React.Component {
             var projectile = new Projectile(startX, startY, player.facing);
             var path = this.projectileController.getProjectilePath(projectile);
             var isFacingHorizontal = player.facing === Direction.LEFT || player.facing === Direction.RIGHT;
-            var effect = new Effect(isFacingHorizontal ? '-' : '|', "#f00");
+
+            var projectileType = player.dischargeShot();
+            var projectileCharacter = this.getProjectileCharacter(projectileType, isFacingHorizontal);
+            var effect = new Effect(projectileCharacter, "#f00");
 
             player.canMove = false;
             this.projectileController.moveUntilDestroyed(projectile, path, EFFECT_STEP_DISPLAY_TIME_MLLISECONDS, effect, () => player.canMove = true);
         }
+    }
 
-        if (refreshView) {
-            this.setState({"gameData": Object.assign({}, this.state["gameData"])}); // Refresh
+    getProjectileCharacter = (projectileType, isHorizontal) => {
+        switch (projectileType) {
+            case ProjectileType.NORMAL:
+                return isHorizontal ? '-' : '|';
+            case ProjectileType.CHARGED:
+                return isHorizontal ? '=' : '║';
+            default:
+                throw Error("Not sure how to portray shots of " + projectileType + " when isHorizontal=" + isHorizontal);
         }
+    }
+
+    refreshView = () => {
+        this.setState({"gameData": Object.assign({}, this.state["gameData"])}); // Refresh
     }
 }
 
