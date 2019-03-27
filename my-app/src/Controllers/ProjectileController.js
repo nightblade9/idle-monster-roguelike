@@ -67,12 +67,13 @@ class ProjectileController {
                 projectile.y = currentStep.y;
                 var currentTile = this.gameData.getTile(projectile.x, projectile.y);
                 currentTile.effect = effect;
+                // TODO: don't want players to "scout" using this.
+                // But without it, if the shot leaves LOS, we should quickly calculate
+                // the remaining steps and just terminate abruptly; not make the player wait.
                 currentTile.discovered = true;                
 
                 currentIndex++;
-                console.log("step " + currentIndex);
             } else {
-                console.log("Done");
                 clearInterval(intervalId);
                 this.gameData.getTile(projectile.x, projectile.y).effect = null;
                 onCompleteCallback();

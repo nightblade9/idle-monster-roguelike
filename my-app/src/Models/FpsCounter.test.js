@@ -1,5 +1,6 @@
-import FpsCounter from '../Models/FpsCounter';
 import sinon from 'sinon/lib/sinon';
+
+import FpsCounter from '../Models/FpsCounter';
 
 var clock;
 
@@ -16,8 +17,6 @@ it('onRender increments draw calls', () => {
   fpsCounter.onRender();
   expect(fpsCounter.drawCalls).toBe(1);
 });
-
-var clock;
 
 // Yo dawg, I heard you like tests, can I test your tests?
 // (Placeholder test for our time-mocking library.)

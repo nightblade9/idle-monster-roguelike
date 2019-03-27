@@ -1,7 +1,20 @@
+import sinon from 'sinon/lib/sinon';
+
 import Direction from "../Enums/Direction";
-import ProjectileController from "./ProjectileController";
+import Effect from '../Models/Effect';
 import GameData from '../Models/GameData';
+import ProjectileController from "./ProjectileController";
 import Projectile from "../Models/Projectile";
+
+var clock;
+
+beforeEach(function() {
+  clock = sinon.useFakeTimers();
+});
+
+afterEach(function() {
+  clock.restore();
+});
 
 it('moveProjectile moves it in all four compass directions', () => {
   var gameData = new GameData();
@@ -65,3 +78,41 @@ it('getProjectilePath stops on walls', () => {
   var finalStep = path[path.length - 1];
   expect(finalStep.y).toBe(0); // top wall
 });
+
+it('moveUntilDestroyed moves projectile periodically (setting effect) and executes callback on complete', () => {
+  var millisecondsPerStep = 100;
+
+  // Arrange
+  var gameData = new GameData();
+  var controller = new ProjectileController(gameData);
+  // Travels to (0, 3) and poof!
+  var projectile = new Projectile(3, 3, Direction.LEFT);
+  var path = controller.getProjectilePath(projectile);
+  var effect = new Effect('$', "#ff0");
+  var calledOnComplete = false;
+
+  // Act/Assert
+  controller.moveUntilDestroyed(projectile, path, millisecondsPerStep, effect, () => calledOnComplete = true);
+  // No time elapsed, so projectile should still be in the same spot.
+  expect(projectile.x).toBe(3);
+  clock.tick(millisecondsPerStep - 1);
+  expect(projectile.x).toBe(3);
+
+  // Move and see it moved
+  clock.tick(1);
+  expect(projectile.x).toBe(2);
+  var currentTile = gameData.getTile(projectile.x, projectile.y);
+  expect(currentTile.effect).toBe(effect);
+  // Previously-occupied tile is empty of effects
+  expect(gameData.getTile(projectile.x + 1, projectile.y).effect).toBe(null);
+
+  // Move it three more times, should be destroyed
+  clock.tick(millisecondsPerStep * 3);
+  expect(projectile.x).toBe(0);
+  expect(projectile.y).toBe(3);
+
+  currentTile = gameData.getTile(projectile.x, projectile.y);
+  expect(currentTile.effect).toBe(null);
+
+  expect(calledOnComplete).toBe(true);
+})
