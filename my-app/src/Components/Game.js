@@ -9,6 +9,7 @@ import ProjectileController from '../Controllers/ProjectileController';
 import ProjectileType from '../Enums/ProjectileType';
 import StatusBar from './StatusBar';
 import Tile from './Tile';
+import Palette from '../Enums/Palette';
 
 const KEY_TO_DIRECTION = {
     "w": Direction.UP,
@@ -148,7 +149,7 @@ class Game extends React.Component {
 
             var projectileType = player.dischargeShot();
             var projectileCharacter = this.getProjectileCharacter(projectileType, isFacingHorizontal);
-            var effect = new Effect(projectileCharacter, "#f00");
+            var effect = new Effect(projectileCharacter, Palette.RED);
 
             player.canMove = false;
             this.projectileController.moveUntilDestroyed(projectile, path, EFFECT_STEP_DISPLAY_TIME_MLLISECONDS, effect, () => player.canMove = true);

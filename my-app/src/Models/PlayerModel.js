@@ -1,8 +1,10 @@
 import Direction from '../Enums/Direction';
 import ProjectileType from '../Enums/ProjectileType';
+import Palette from '../Enums/Palette';
 
 class PlayerModel {
     DISPLAY_CHARACTER = '@';
+    BASE_COLOUR = Palette.OFF_WHITE;
     TIME_TO_CHARGE_SHOT_MS = 250;
     
     x = 0;

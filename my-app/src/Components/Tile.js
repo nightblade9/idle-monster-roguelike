@@ -1,4 +1,5 @@
 import React from 'react';
+import Palette from '../Enums/Palette';
 
 class Tile extends React.Component {
     
@@ -63,9 +64,9 @@ class Tile extends React.Component {
         if (!this.state["isVisible"]) {
             if (stateData.discovered === true) {
                 // return based on floor/wall/etc
-                return "#444";
+                return Palette.DARK_GREY;
             } else {
-                return "black";
+                return Palette.PURE_BLACK;
             }
         } else {
             if (stateData.effect != null) {
@@ -86,8 +87,8 @@ Tile.VALID_STATES_DISPLAY = {
 }
 
 Tile.TYPE_COLOURS = {
-    "floor": "#888",
-    "wall": "#bbb"
+    "floor": Palette.GREY,
+    "wall": Palette.DARK_GREY
 }
 
 export default Tile;
