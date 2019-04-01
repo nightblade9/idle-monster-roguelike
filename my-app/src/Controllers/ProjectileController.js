@@ -44,11 +44,11 @@ class ProjectileController {
     }
 
     shouldBeDestroyed = (projectile) => {
-        if (projectile.x < 0 || projectile.x >= this.gameData.mapWidth || projectile.y < 0 || projectile.y >= this.gameData.mapHeight) {
+        if (projectile.x < 0 || projectile.x >= this.gameData.currentMap.tilesWide || projectile.y < 0 || projectile.y >= this.gameData.currentMap.tilesHigh) {
             return true;
         }
 
-        var tile = this.gameData.getTile(projectile.x, projectile.y);
+        var tile = this.gameData.currentMap.get(projectile.x, projectile.y);
         if (!tile.isWalkable()) {
             return true;
         }
@@ -62,7 +62,7 @@ class ProjectileController {
         
         var onProjectileDestroyed = () => {
             clearInterval(intervalId);
-            this.gameData.getTile(projectile.x, projectile.y).effect = null;
+            this.gameData.currentMap.get(projectile.x, projectile.y).effect = null;
             onCompleteCallback();
         }
 
@@ -71,12 +71,12 @@ class ProjectileController {
                 var currentStep = path[currentIndex];
 
                 if (currentIndex > 0) {
-                    this.gameData.getTile(projectile.x, projectile.y).effect = null;
+                    this.gameData.currentMap.get(projectile.x, projectile.y).effect = null;
                 }
                 
                 projectile.x = currentStep.x;
                 projectile.y = currentStep.y;
-                var currentTile = this.gameData.getTile(projectile.x, projectile.y);
+                var currentTile = this.gameData.currentMap.get(projectile.x, projectile.y);
                 currentTile.effect = effect;
                 
                 currentIndex++;
@@ -86,7 +86,7 @@ class ProjectileController {
                 if (!isInSight) {
                     // Don't make the player wait until it gets destroyed.
                     // TODO: process damage along the path. For now, just skip to the end.
-                    this.gameData.getTile(projectile.x, projectile.y).effect = null;
+                    this.gameData.currentMap.get(projectile.x, projectile.y).effect = null;
                     var finalTile = path[path.length - 1];
                     projectile.x = finalTile.x;
                     projectile.y = finalTile.y;

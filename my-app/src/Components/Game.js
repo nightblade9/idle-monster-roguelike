@@ -70,11 +70,11 @@ class Game extends React.Component {
         var data = this.state["gameData"];
 
         // Outer loop to create parent
-        for (let y = 0; y < data.mapHeight; y++) {
+        for (let y = 0; y < data.currentMap.tilesHigh; y++) {
             let tiles = []
             //Inner loop to create children
-            for (let x = 0; x < data.mapWidth; x++) {
-                tiles.push(<Tile x={x} y={y} contents={data.currentMap[y * data.mapWidth + x]} key={"tile" + x + "-" + y} player={data.player} />)
+            for (let x = 0; x < data.currentMap.tilesWide; x++) {
+                tiles.push(<Tile x={x} y={y} contents={data.currentMap.get(x, y)} key={"tile" + x + "-" + y} player={data.player} />)
             }
             //Create the parent and add the children
             rows.push(<div className="row" key={"row" + rows.length}>{tiles}</div>)
