@@ -12,19 +12,9 @@ class GameData {
         this.currentMap = Array(MAP_TILES_WIDE * MAP_TILES_HIGH);
         this.mapWidth = MAP_TILES_WIDE;
         this.mapHeight = MAP_TILES_HIGH;
-
         this.player = new PlayerModel(this.mapWidth / 2, this.mapHeight / 2);        
         
-        for (let y = 0; y < MAP_TILES_HIGH; y++) {
-            for (let x = 0; x < MAP_TILES_WIDE; x++) {
-                var index = this.coordinatesToIndex(x, y);
-                if (x === 0 || y === 0 || x === MAP_TILES_WIDE - 1 || y === MAP_TILES_HIGH - 1) {
-                    this.currentMap[index] = new TileModel(x, y, "wall");
-                } else {
-                    this.currentMap[index] = new TileModel(x, y, "floor");
-                }
-            }
-        }
+        this.generateMap();
 
         var playerTile = this.currentMap[(this.player.y * MAP_TILES_WIDE) + this.player.x];
         playerTile.occupy(this.player);
@@ -58,6 +48,19 @@ class GameData {
             return true;
         } else {
             return false;
+        }
+    }
+
+    generateMap = () => {
+        for (let y = 0; y < MAP_TILES_HIGH; y++) {
+            for (let x = 0; x < MAP_TILES_WIDE; x++) {
+                var index = this.coordinatesToIndex(x, y);
+                if (x === 0 || y === 0 || x === MAP_TILES_WIDE - 1 || y === MAP_TILES_HIGH - 1) {
+                    this.currentMap[index] = new TileModel(x, y, "wall");
+                } else {
+                    this.currentMap[index] = new TileModel(x, y, "floor");
+                }
+            }
         }
     }
 }

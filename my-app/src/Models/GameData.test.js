@@ -18,8 +18,9 @@ it('creates a map in the constructor and sets the player coordinates and tile', 
   expect(playerTile.occupant).toBe(player);
 });
 
-it('creates a map with some wall tiles and some floor tiles, in the constructor', () => {
-  var gameData = new GameData();
+it('generateMap creates a map with some wall tiles and some floor tiles, in the constructor', () => {
+  var gameData = new GameData(); 
+  gameData.generateMap(); // already done in constructor, added here for clarity
   var numFloors = 0;
   var numWalls = 0;
 

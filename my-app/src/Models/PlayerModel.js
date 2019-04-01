@@ -4,7 +4,7 @@ import Palette from '../Enums/Palette';
 
 class PlayerModel {
     DISPLAY_CHARACTER = '@';
-    BASE_COLOUR = Palette.OFF_WHITE;
+    BASE_COLOUR = Palette.WHITE;
     TIME_TO_CHARGE_SHOT_MS = 250;
     
     x = 0;
