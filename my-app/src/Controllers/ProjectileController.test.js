@@ -5,6 +5,7 @@ import Effect from '../Models/Effect';
 import GameData from '../Models/GameData';
 import ProjectileController from "./ProjectileController";
 import Projectile from "../Models/Projectile";
+import TileMap from "../Models/TileMap";
 
 var clock;
 
@@ -120,11 +121,15 @@ it('moveUntilDestroyed moves projectile periodically (setting effect) and execut
   expect(calledOnComplete).toBe(true);
 })
 
-it('moveUntilDestroyed short-cuts projectile to end-path when it gies out of sight', () => {
+it('moveUntilDestroyed short-cuts projectile to end-path when it goes out of sight', () => {
   var millisecondsPerStep = 50;
 
   // Arrange
   var gameData = new GameData();
+  // generates an empty map (no monsters)
+  gameData.currentMap = new TileMap(50, 16);
+  gameData.currentMap.generate();
+
   // Map is wide. It should traverse all the way to the right-side.
   gameData.player.x = 2;
   gameData.player.y = 2;

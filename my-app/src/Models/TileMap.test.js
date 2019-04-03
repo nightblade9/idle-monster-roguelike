@@ -1,5 +1,6 @@
 import TileMap from "./TileMap";
-import Tile from "./TileModel";
+import TileModel from "./TileModel";
+import MonsterModel from "./MonsterModel";
 
 it('getTile gets tile at specified coordinates', () => {
 var tileMap = new TileMap(50, 16);
@@ -46,3 +47,51 @@ it('generate creates a map with some wall tiles and some floor tiles, in the con
     expect(numFloors).toBeGreaterThan(0);
     expect(numWalls).toBeGreaterThan(0);
   });
+
+  it('findEmptyTile finds an unoccupied floor tile', () => {
+    // Create a map with only four tiles: two walkable/unoccupied, one walkable/occupied, and one wall.
+    // Assert that we eventually get both of the two walkable/unoccupied tiles.
+
+    var tileMap = new TileMap(4, 1);
+    
+    // Manual generation
+    for (var i = 0; i < 4; i++) {
+      tileMap.tileData[i] = new TileModel(0, 0, "floor");
+    }
+
+    tileMap.tileData[0].type = "wall";
+    tileMap.tileData[1].occupy(new MonsterModel(1, 0));
+
+    // Act/assert
+    var expectedTiles = [tileMap.getTile(2, 0), tileMap.getTile(3, 0)];
+    var actualTiles = [];
+    var numIterations = 0;
+
+    while (actualTiles.length != expectedTiles.length && numIterations < 1000) {
+      var nextTile = tileMap.findEmptyTile();
+      if (actualTiles.indexOf(nextTile) === -1) {
+        actualTiles.push(nextTile);
+      }
+      numIterations++;
+    }
+
+    expect(numIterations).not.toBe(1000); // 1000 tries, didn't get two available tiles.
+    expect(actualTiles.length).toBe(expectedTiles.length);
+    expect(actualTiles).toContain(tileMap.getTile(2, 0));
+    expect(actualTiles).toContain(tileMap.getTile(3, 0));
+  })
+
+  it('generateMonsters generates monsters in expected range', () => {
+    var tileMap = new TileMap(20, 15);
+    tileMap.generate();
+    tileMap.generateMonsters();
+
+    var actualMonsters = 0;
+    for (var i = 0; i < tileMap.tileData.length; i++) {
+      if (tileMap.tileData[i].occupant != null) {
+        actualMonsters++;
+      }
+    }
+
+    expect(actualMonsters >= TileMap.MIN_MONSTERS && actualMonsters <= TileMap.MAX_MONSTERS);
+  })

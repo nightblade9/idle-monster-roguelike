@@ -1,3 +1,4 @@
+import Monster from './MonsterModel';
 import TileModel from './TileModel';
 
 const MIN_MONSTERS = 10
@@ -33,8 +34,24 @@ class TileMap {
         }
     }
 
+    findEmptyTile = () => {
+        var x = Math.floor(Math.random() * this.tilesWide);
+        var y = Math.floor(Math.random() * this.tilesHigh);
+        
+        while (!this.getTile(x, y).isWalkable()) {
+            x = Math.floor(Math.random() * this.tilesWide);
+            y = Math.floor(Math.random() * this.tilesHigh);
+        }
+
+        return this.getTile(x, y);
+    }
+
     generateMonsters = () => {
-        //var numMonsters = Math.random(MAX_MONSTERS - MIN_MONSTERS) + MIN_MONSTERS;
+        var numMonsters = Math.random(MAX_MONSTERS - MIN_MONSTERS) + MIN_MONSTERS;
+        for (var i = 0; i < numMonsters; i++) {
+            var tile = this.findEmptyTile();
+            tile.occupy(new Monster(tile.x, tile.y));
+        }
     }
     
     coordinatesToIndex = (x, y) => {

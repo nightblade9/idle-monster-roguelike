@@ -1,6 +1,7 @@
 import GameData from '../Models/GameData'
 import PlayerController from "./PlayerController";
 import Direction from '../Enums/Direction';
+import TileMap from '../Models/TileMap';
 
 it('tryMovePlayer throws if direction is invalid', () => {
   var gameData = new GameData();
@@ -10,6 +11,9 @@ it('tryMovePlayer throws if direction is invalid', () => {
 
 it('tryMovePlayer returns gameData.tryToMove and sets player direction if direction is legit', () => {
   var gameData = new GameData();
+  // generates an empty map (no monsters)
+  gameData.currentMap = new TileMap(50, 16);
+  gameData.currentMap.generate();
   gameData.player.facing = Direction.UP;
   var controller = new PlayerController(gameData);
 
