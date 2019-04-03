@@ -55,10 +55,10 @@ it('shouldBeDestroyed returns true if projectile is out of bounds', () => {
   projectile = new Projectile(1, -3, Direction.UP);
   expect(system.shouldBeDestroyed(projectile)).toBe(true);
 
-  projectile = new Projectile(gameData.mapWidth, 3, Direction.UP);
+  projectile = new Projectile(gameData.currentMap.tilesWide, 3, Direction.UP);
   expect(system.shouldBeDestroyed(projectile)).toBe(true);
 
-  projectile = new Projectile(3, gameData.mapHeight, Direction.UP);
+  projectile = new Projectile(3, gameData.currentMap.tilesHigh, Direction.UP);
   expect(system.shouldBeDestroyed(projectile)).toBe(true);
 });
 
@@ -104,17 +104,17 @@ it('moveUntilDestroyed moves projectile periodically (setting effect) and execut
   // Move and see it moved
   clock.tick(1);
   expect(projectile.x).toBe(2);
-  var currentTile = gameData.getTile(projectile.x, projectile.y);
+  var currentTile = gameData.currentMap.getTile(projectile.x, projectile.y);
   expect(currentTile.effect).toBe(effect);
   // Previously-occupied tile is empty of effects
-  expect(gameData.getTile(projectile.x + 1, projectile.y).effect).toBe(null);
+  expect(gameData.currentMap.getTile(projectile.x + 1, projectile.y).effect).toBe(null);
 
   // Move it three more times, should be destroyed
   clock.tick(millisecondsPerStep * 3);
   expect(projectile.x).toBe(0);
   expect(projectile.y).toBe(3);
 
-  currentTile = gameData.getTile(projectile.x, projectile.y);
+  currentTile = gameData.currentMap.getTile(projectile.x, projectile.y);
   expect(currentTile.effect).toBe(null);
 
   expect(calledOnComplete).toBe(true);
@@ -141,17 +141,17 @@ it('moveUntilDestroyed short-cuts projectile to end-path when it gies out of sig
   // Move and see it moved
   clock.tick(millisecondsPerStep);
   expect(projectile.x).toBe(4);
-  var currentTile = gameData.getTile(projectile.x, projectile.y);
+  var currentTile = gameData.currentMap.getTile(projectile.x, projectile.y);
   expect(currentTile.effect).toBe(effect);
   // Previously-occupied tile is empty of effects
-  expect(gameData.getTile(projectile.x + 1, projectile.y).effect).toBe(null);
+  expect(gameData.currentMap.getTile(projectile.x + 1, projectile.y).effect).toBe(null);
 
   // Move it a few more times, should go out of sight
   clock.tick(millisecondsPerStep * 7);
-  expect(projectile.x).toBe(gameData.mapWidth - 1);
+  expect(projectile.x).toBe(gameData.currentMap.tilesWide - 1);
   expect(projectile.y).toBe(3);
 
-  currentTile = gameData.getTile(projectile.x, projectile.y);
+  currentTile = gameData.currentMap.getTile(projectile.x, projectile.y);
   expect(currentTile.effect).toBe(null);
 
   expect(calledOnComplete).toBe(true);

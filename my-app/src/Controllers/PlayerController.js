@@ -61,7 +61,7 @@ class PlayerController {
             for (var x = startX; x < endX; x++) {
                 var distance = Math.sqrt(Math.pow(x - this.gameData.player.x, 2) + Math.pow(y - this.gameData.player.y, 2));
                 if (x >= 0 && y >= 0 && x <= this.gameData.currentMap.tilesWide && y <= this.gameData.currentMap.tilesHigh && distance <= this.gameData.player.sightRadius) {
-                    var currentTile = this.gameData.currentMap.get(x, y);
+                    var currentTile = this.gameData.currentMap.getTile(x, y);
                     if (currentTile != null) {
                         toReturn.push(currentTile);
                     }

@@ -74,7 +74,7 @@ class Game extends React.Component {
             let tiles = []
             //Inner loop to create children
             for (let x = 0; x < data.currentMap.tilesWide; x++) {
-                tiles.push(<Tile x={x} y={y} contents={data.currentMap.get(x, y)} key={"tile" + x + "-" + y} player={data.player} />)
+                tiles.push(<Tile x={x} y={y} contents={data.currentMap.getTile(x, y)} key={"tile" + x + "-" + y} player={data.player} />)
             }
             //Create the parent and add the children
             rows.push(<div className="row" key={"row" + rows.length}>{tiles}</div>)

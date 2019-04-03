@@ -12,9 +12,9 @@ class TileMap {
         this.tileData = Array(tilesWide * tilesHigh);
     }
 
-    get = (x, y) => {
+    getTile = (x, y) => {
         if (x < 0 || y < 0 || x >= this.tilesWide || y >= this.tilesHigh) {
-            throw Error("Invalid coordinates: (" + x + ", " + y + ")");
+            return null; // makes things easier than throwing
         }
         var index = this.coordinatesToIndex(x, y);
         return this.tileData[index];

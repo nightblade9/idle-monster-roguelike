@@ -48,7 +48,7 @@ class ProjectileController {
             return true;
         }
 
-        var tile = this.gameData.currentMap.get(projectile.x, projectile.y);
+        var tile = this.gameData.currentMap.getTile(projectile.x, projectile.y);
         if (!tile.isWalkable()) {
             return true;
         }
@@ -62,7 +62,7 @@ class ProjectileController {
         
         var onProjectileDestroyed = () => {
             clearInterval(intervalId);
-            this.gameData.currentMap.get(projectile.x, projectile.y).effect = null;
+            this.gameData.currentMap.getTile(projectile.x, projectile.y).effect = null;
             onCompleteCallback();
         }
 
@@ -71,12 +71,12 @@ class ProjectileController {
                 var currentStep = path[currentIndex];
 
                 if (currentIndex > 0) {
-                    this.gameData.currentMap.get(projectile.x, projectile.y).effect = null;
+                    this.gameData.currentMap.getTile(projectile.x, projectile.y).effect = null;
                 }
                 
                 projectile.x = currentStep.x;
                 projectile.y = currentStep.y;
-                var currentTile = this.gameData.currentMap.get(projectile.x, projectile.y);
+                var currentTile = this.gameData.currentMap.getTile(projectile.x, projectile.y);
                 currentTile.effect = effect;
                 
                 currentIndex++;
@@ -86,7 +86,7 @@ class ProjectileController {
                 if (!isInSight) {
                     // Don't make the player wait until it gets destroyed.
                     // TODO: process damage along the path. For now, just skip to the end.
-                    this.gameData.currentMap.get(projectile.x, projectile.y).effect = null;
+                    this.gameData.currentMap.getTile(projectile.x, projectile.y).effect = null;
                     var finalTile = path[path.length - 1];
                     projectile.x = finalTile.x;
                     projectile.y = finalTile.y;

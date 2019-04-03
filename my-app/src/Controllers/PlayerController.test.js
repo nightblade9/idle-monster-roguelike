@@ -35,7 +35,7 @@ it('tryMovePlayer discovers tiles in the FOV if moved', () => {
   player.y = 3;
   
   // just check one tile
-  var fovTile = gameData.currentMap[player.x - 1, player.y]; 
+  var fovTile = gameData.currentMap.getTile(player.x - 1, player.y);
   fovTile.discovered = false;
   
   // Act
