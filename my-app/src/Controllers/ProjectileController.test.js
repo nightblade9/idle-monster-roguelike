@@ -19,6 +19,8 @@ afterEach(function() {
 
 it('moveProjectile moves it in all four compass directions', () => {
   var gameData = new GameData();
+  gameData.currentMap = new TileMap(50, 16);
+  gameData.calledOnComplete.generate();
   var system = new ProjectileController(gameData);
   
   var projectile = new Projectile(3, 3, Direction.UP);
@@ -44,6 +46,9 @@ it('moveProjectile moves it in all four compass directions', () => {
 
 it('shouldBeDestroyed returns true if projectile is out of bounds', () => {
   var gameData = new GameData();
+  gameData.currentMap = new TileMap(50, 16);
+  gameData.calledOnComplete.generate();
+
   var system = new ProjectileController(gameData);
 
   // baseline / positive test case
@@ -65,6 +70,9 @@ it('shouldBeDestroyed returns true if projectile is out of bounds', () => {
 
 it('shouldBeDestroyed returns true if projectil tile is a wall', () => {
   var gameData = new GameData();
+  gameData.currentMap = new TileMap(50, 16);
+  gameData.calledOnComplete.generate();
+
   var system = new ProjectileController(gameData);
   var projectile = new Projectile(0, 7); // walls along the top
   expect(system.shouldBeDestroyed(projectile)).toBe(true);
@@ -72,6 +80,22 @@ it('shouldBeDestroyed returns true if projectil tile is a wall', () => {
 
 it('getProjectilePath stops on walls', () => {
   var gameData = new GameData();
+  gameData.currentMap = new TileMap(50, 16);
+  gameData.calledOnComplete.generate();
+
+  var system = new ProjectileController(gameData);
+  var projectile = new Projectile(7, 7, Direction.UP);
+
+  var path = system.getProjectilePath(projectile); // hits top wall and 'splodes
+  var finalStep = path[path.length - 1];
+  expect(finalStep.y).toBe(0); // top wall
+});
+
+it('getProjectilePath stops on monsters', () => {
+  var gameData = new GameData();
+  gameData.currentMap = new TileMap(50, 16);
+  gameData.calledOnComplete.generate();
+
   var system = new ProjectileController(gameData);
   var projectile = new Projectile(7, 7, Direction.UP);
 
@@ -85,6 +109,9 @@ it('moveUntilDestroyed moves projectile periodically (setting effect) and execut
 
   // Arrange
   var gameData = new GameData();
+  gameData.currentMap = new TileMap(50, 16);
+  gameData.calledOnComplete.generate();
+  
   // Stay in FOV, observe it hitting the wall
   gameData.player.x = 2;
   gameData.player.y = 2;
