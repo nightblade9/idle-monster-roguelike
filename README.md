@@ -1,8 +1,8 @@
 #  Space Marine Junaid
 
-[![Build Status](https://travis-ci.org/nightblade9/space-marine-junaid.svg?branch=master)](https://travis-ci.org/nightblade9/space-marine-junaid)
+[![Build Status](https://travis-ci.org/nightblade9/space-marine-junaid-reactjs.svg?branch=master)](https://travis-ci.org/nightblade9/space-marine-junaid-reactjs)
 
-Metroid-inspired roguelike made in ReactJS. 
+Metroid-inspired roguelike made in ReactJS. Succeeded by [the C# version](https://github.com/deengames/space-marine-junaid).
 
 # Notes
 
